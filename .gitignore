@@ -1,0 +1,158 @@
+#====================================================================
+# Flutter / Dart
+#====================================================================
+
+# General Flutter/Dart generated files
+.dart_tool/
+.packages
+build/
+coverage/
+
+# Flutter tool logs
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Generated Plugin Registrant
+lib/generated_plugin_registrant.dart
+
+# Sensitive information - **NEVER** commit secrets
+# If you need to store API keys or other secrets, use environment variables,
+# a secrets management solution, or a configuration file that is NOT committed
+# (and is listed here). Consider creating template/example files instead.
+# Example: secrets.json, .env, etc.
+# secrets.json
+# .env*
+# !.env.example
+
+# Build reports
+*.apk
+*.aab
+*.ipa
+*.app
+*.aot
+*.so
+*.dll
+*.dylib
+*.exe
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.snap
+*.msix
+*.appx
+*.int
+*.jit
+*.kernel
+*.metadata
+*.symbols
+build_report.json
+
+# Android specific
+android/.gradle/
+android/app/build/
+android/build/
+android/app/src/main/jniLibs/
+android/key.properties
+android/*.jks
+android/*.keystore
+
+# iOS specific
+ios/Pods/
+ios/Flutter/App.framework
+ios/Flutter/engine.framework
+ios/Flutter/flutter_assets/
+ios/.symlinks/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Runner.xcworkspace/contents.xcworkspacedata
+ios/Runner.xcodeproj/project.xcworkspace/
+ios/Runner.xcodeproj/xcuserdata/
+*.mobileprovision
+
+# macOS specific
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/Runner.xcworkspace/contents.xcworkspacedata
+macos/Runner.xcodeproj/project.xcworkspace/
+macos/Runner.xcodeproj/xcuserdata/
+
+# Linux specific
+linux/flutter/ephemeral/
+linux/CMakeLists.txt.user
+
+# Windows specific
+windows/flutter/ephemeral/
+windows/runner/Debug/
+windows/runner/Release/
+windows/runner/Profile/
+windows/.vs/
+
+# Web specific
+web/build/
+web/.dart_tool/
+
+#====================================================================
+# IDE / Editor specific files
+#====================================================================
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+# Note: You might want to commit .vscode/launch.json or .vscode/settings.json
+# if your team agrees on shared configurations. Uncomment lines below if needed.
+# !.vscode/launch.json
+# !.vscode/settings.json
+
+#====================================================================
+# OS specific files
+#====================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+#====================================================================
+# Other common files
+#====================================================================
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Crash reports
+crash_reports/
+hs_err_pid*.log
+
+# IMPORTANT NOTE: pubspec.lock
+#
+# It is generally RECOMMENDED to COMMIT `pubspec.lock` to version control
+# for application projects. This ensures that all developers and CI/CD systems
+# use the exact same versions of dependencies, leading to reproducible builds.
+# Therefore, `pubspec.lock` is NOT included in this .gitignore file.
+# If you are developing a LIBRARY, you might consider ignoring it, but for
+# applications, keep it versioned.
+
