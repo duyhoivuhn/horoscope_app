@@ -83,8 +83,9 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
     // Define base text style using the loaded font
     baseTextStyle = pw.TextStyle(
-      fontSize: 10,
+      fontSize: 8,
       font: ttf,
+      fontWeight: pw.FontWeight.bold,
     ); // Reduced font size slightly
     pdf.addPage(
       pw.MultiPage(
@@ -172,18 +173,22 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
       body:
           pdfFile == null
               ? const Center(child: CircularProgressIndicator())
-              : PdfView(
-                // 1. Đảm bảo cuộn dọc
-                scrollDirection: Axis.vertical,
-                // 2. Tắt page snapping để cuộn liền mạch
-                pageSnapping: false,
-                // 3. Đặt nền trong suốt để tránh khoảng trống trực quan
-                backgroundDecoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ), // Hoặc bạn có thể thử đặt là null
-                // Tùy chọn: Có thể thử physics khác nếu muốn
-                // physics: const ClampingScrollPhysics(),
-                controller: PdfController(document: createPdfDocument()),
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: PdfView(
+                      scrollDirection: Axis.horizontal,
+                      pageSnapping: false,
+                      backgroundDecoration: const BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      controller: PdfController(document: createPdfDocument()),
+                    ),
+                  ),
+
+                  // SizedBox(height: 20),
+                ],
               ),
     );
   }
@@ -288,6 +293,17 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     // Use the passed font
     baseTextStyle = baseTextStyle?.copyWith(font: ttf);
 
+    final yearStart = AppUtil(solarDateTime: solarDate!).getTuoiKhoiVan(
+      year: widget.model.year ?? 2025,
+      month: widget.model.month ?? 12,
+      day: widget.model.day ?? 25,
+      hour: widget.model.hour ?? 23,
+      minute: widget.model.minute ?? 0,
+      second: widget.model.second ?? 0,
+      isMale: widget.model.generate == 'Nam',
+    );
+
+    final dateDaVan = DateTime((widget.model.year ?? 0) + yearStart, 1, 1);
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -445,41 +461,150 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
               // Row 6: Tàng Can (Hidden Stems)
               pw.TableRow(
                 children: [
-                  pw.Row(
-                    mainAxisSize: pw.MainAxisSize.max,
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanGio().map((e) => tb(value: e)).toList(),
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: _date!)
+                              .getTangCanGio()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
-                  pw.Row(
-                    mainAxisSize: pw.MainAxisSize.max,
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanNgay().map((e) => tb(value: e)).toList(),
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: _date!)
+                              .getTangCanNgay()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
-                  pw.Row(
-                    mainAxisSize: pw.MainAxisSize.max,
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanThang().map((e) => tb(value: e)).toList(),
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: _date!)
+                              .getTangCanThang()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
-                  pw.Row(
-                    mainAxisSize: pw.MainAxisSize.max,
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanNam().map((e) => tb(value: e)).toList(),
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: _date!)
+                              .getTangCanNam()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
                 ],
               ),
+
               // Row 7: Trường Sinh (Life Cycle Phases)
+              pw.TableRow(
+                children: [
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                ],
+              ),
               pw.TableRow(
                 children: [
                   tb(
@@ -500,29 +625,25 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                   ),
                 ],
               ),
-              pw.TableRow(
-                children: [
-                  tb(value: ''),
-                  tb(value: ''),
-                  tb(value: ''),
-                  tb(value: ''),
-                ],
-              ),
-              pw.TableRow(
-                children: [
-                  tb(value: ''),
-                  tb(value: ''),
-                  tb(value: ''),
-                  tb(value: ''),
-                ],
-              ),
               // Row 8: Nạp Âm (Na Yin)
               pw.TableRow(
                 children: [
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmThang()),
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNam()),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getNapAmGio(),
+                    bg: PdfColors.grey200,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getNapAmNgay(),
+                    bg: PdfColors.grey200,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getNapAmThang(),
+                    bg: PdfColors.grey200,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getNapAmNam(),
+                    bg: PdfColors.grey200,
+                  ),
                 ],
               ),
             ],
@@ -548,21 +669,21 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
                 children: [
                   // Combined Đại Vận Header
-                  tb(value: '1995', isBold: true, bg: PdfColors.yellow),
+                  tb(
+                    value: ((widget.model.year ?? 0) + yearStart).toString(),
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                  ),
                   // Combined Tuổi Header
-                  tb(value: '2025', isBold: true, bg: PdfColors.yellow),
+                  tb(value: '', isBold: true, bg: PdfColors.yellow),
                 ],
               ),
 
               // Row 3: Thập Thần (Ten Gods)
               pw.TableRow(
                 children: [
-                  tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThapThanGio(),
-                  ),
-                  tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThapThanNgay(),
-                  ),
+                  tb(value: AppUtil(solarDateTime: dateDaVan).getThapThanGio()),
+                  tb(value: ''),
                 ],
               ),
               // Row 4: Thiên Can (Heavenly Stems)
@@ -572,13 +693,16 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 ), // Highlight Can row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThienCanGio(),
-                    bg: PdfColors.lightGreen50,
+                    value: AppUtil(solarDateTime: dateDaVan).getThienCanGio(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: dateDaVan,
+                        ).getThienCanGio().toColor(),
                     isBold: true,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThienCanNgay(),
-                    bg: PdfColors.lightGreen50,
+                    value: '',
+
                     isBold: true,
                     titleColor: PdfColors.blue, // Highlight Day Master
                   ),
@@ -591,59 +715,74 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 ), // Highlight Chi row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiGio(),
-                    bg: PdfColors.orange50,
+                    value: AppUtil(solarDateTime: dateDaVan).getDiaChiGio(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: dateDaVan,
+                        ).getDiaChiGio().toColor(),
                     isBold: true,
                   ),
-                  tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNgay(),
-                    bg: PdfColors.orange50,
-                    isBold: true,
-                  ), // Corrected to getDiaChiNgay
+                  tb(value: '', isBold: true), // Corrected to getDiaChiNgay
                 ],
               ),
               // Row 6: Tàng Can (Hidden Stems)
               pw.TableRow(
                 children: [
-                  tb(
-                    value:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanGio().toString(),
+                  // Giờ Tàng Can
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: _date!)
+                              .getTangCanNam()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
-                  tb(
-                    value:
-                        AppUtil(
-                          solarDateTime: _date!,
-                        ).getTangCanNgay().toString(),
-                  ),
+                  tb(value: ''),
                 ],
               ),
+
+              // Row 8: Nạp Âm (Na Yin)
+              pw.TableRow(children: [tb(value: ''), tb(value: '')]),
+              pw.TableRow(children: [tb(value: ''), tb(value: '')]),
               // Row 7: Trường Sinh (Life Cycle Phases)
               pw.TableRow(
                 children: [
                   tb(
-                    value:
-                        AppUtil(solarDateTime: solarDate!).getTruongSinhGio(),
+                    value: AppUtil(solarDateTime: dateDaVan).getTruongSinhGio(),
                   ),
+                  tb(value: ''),
+                ],
+              ),
+              pw.TableRow(
+                children: [
                   tb(
-                    value:
-                        AppUtil(solarDateTime: solarDate!).getTruongSinhNgay(),
+                    value: AppUtil(solarDateTime: dateDaVan).getNapAmGio(),
+                    bg: PdfColors.grey200,
                   ),
-                ],
-              ),
-              // Row 8: Nạp Âm (Na Yin)
-              pw.TableRow(
-                children: [
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
-                ],
-              ),
-              pw.TableRow(children: [tb(value: ''), tb(value: '')]),
-              pw.TableRow(
-                children: [
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
-                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
+                  tb(value: '', bg: PdfColors.grey200),
                 ],
               ),
             ],
@@ -761,7 +900,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
           color: titleColor ?? PdfColors.black,
           fontWeight:
               (isBold ?? false) ? pw.FontWeight.bold : pw.FontWeight.normal,
-          fontSize: size ?? 10, // Use provided size or default
+          fontSize: size ?? 8, // Use provided size or default
         );
 
     return pw.Container(
@@ -789,7 +928,21 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
+  //MARK: build content 2
   _buildContent2(ttf) {
+    var yearStart = AppUtil(solarDateTime: solarDate!).getTuoiKhoiVan(
+      year: widget.model.year ?? 2025,
+      month: widget.model.month ?? 12,
+      day: widget.model.day ?? 25,
+      hour: widget.model.hour ?? 23,
+      minute: widget.model.minute ?? 0,
+      second: widget.model.second ?? 0,
+      isMale: widget.model.generate == 'Nam',
+    );
+    yearStart += widget.model.year ?? 0;
+
+    final dateDaVan = DateTime(yearStart, 1, 1);
+
     return pw.Column(
       children: [
         tb(value: 'Đại Vận', isBold: true, bg: PdfColors.yellow, height: 24),
@@ -808,7 +961,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
-                          value: 'Năm ${2020 + index * 10}',
+                          value: 'Năm ${yearStart + index * 10}',
                           isBold: true,
                           bg:
                               PdfColors
@@ -819,14 +972,105 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThapThanNam(),
+                        ), // Example data
                       ),
                     ),
 
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThienCanNam(),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThienCanNam().toColor(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getDiaChiNam(),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getDiaChiNam().toColor(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => pw.Container(
+                          // Use Container to manage the Row within the cell
+                          height: 24, // Match default tb height if needed
+                          padding: pw.EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 4,
+                          ), // Match tb padding
+                          alignment: pw.Alignment.center,
+                          decoration: pw.BoxDecoration(
+                            // Add border to match tb
+                            border: pw.Border.all(
+                              color: PdfColors.grey600,
+                              width: 0.5,
+                            ),
+                            color: PdfColors.white,
+                          ),
+                          child: pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                            children:
+                                AppUtil(
+                                      solarDateTime: DateTime(
+                                        yearStart + index * 10,
+                                        1,
+                                        1,
+                                      ),
+                                    )
+                                    .getTangCanNam()
+                                    .map(
+                                      (e) => pw.Text(
+                                        e,
+                                        style: baseTextStyle,
+                                        textAlign: pw.TextAlign.center,
+                                      ),
+                                    )
+                                    .toList(),
+                          ),
+                        ), // Example data
                       ),
                     ),
                     pw.TableRow(
@@ -844,25 +1088,32 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getTruongSinhNam(),
+                        ), // Example data
                       ),
                     ),
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          bg: PdfColors.grey200,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getNapAmNam(),
+                        ), // Example data
                       ),
                     ),
                   ],
@@ -1015,7 +1266,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value: '',
+                          bg: PdfColors.grey200,
+                        ), // Example data
                       ),
                     ),
                   ],
@@ -1168,7 +1422,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value: '',
+                          bg: PdfColors.grey200,
+                        ), // Example data
                       ),
                     ),
                   ],
@@ -1383,13 +1640,39 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                             width: 60,
                             child: tb(value: 'Đại Vận', bg: PdfColors.yellow),
                           ),
-                          pw.SizedBox(width: 160, child: tb(value: 'abc')),
+                          pw.SizedBox(
+                            width: 160,
+                            child: tb(
+                              height: 30,
+                              value:
+                                  AppUtil(solarDateTime: solarDate!)
+                                      .tinhDaiVan(
+                                        year: widget.model.year ?? 1995,
+                                        month: widget.model.month ?? 12,
+                                        day: widget.model.day ?? 25,
+                                        hour: widget.model.hour ?? 23,
+                                        minute: widget.model.minute ?? 0,
+                                        second: widget.model.second ?? 0,
+                                        isMale:
+                                            widget.model.generate == 'Nam'
+                                                ? true
+                                                : false,
+                                      )
+                                      .toString(),
+                            ),
+                          ),
                         ], // Example data
                       ),
                       pw.TableRow(
                         children: [
                           tb(value: 'Tiết Khí', bg: PdfColors.yellow),
-                          tb(value: 'avc'),
+                          tb(
+                            value:
+                                AppUtil(
+                                  solarDateTime: solarDate!,
+                                ).getTietKhiHienTaiCuaNgay(),
+                            height: 30,
+                          ),
                         ], // Example data
                       ),
                     ],
