@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:horoscope_app/bang_dai_van.dart';
 import 'package:horoscope_app/data_model.dart';
 import 'package:horoscope_app/gen/assets.gen.dart';
-import 'package:horoscope_app/lunar/calendar/util/AppUtil.dart';
+import 'package:horoscope_app/utils/AppUtil.dart';
 import 'package:horoscope_app/lunar/lunar.dart';
 import 'package:horoscope_app/main.dart';
 import 'package:horoscope_app/styles.dart';
@@ -313,10 +313,26 @@ class _TicketPageState extends State<TicketPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                tb(value: AppUtil(solarDateTime: _date!).getTangCanGio()),
-                tb(value: AppUtil(solarDateTime: _date!).getTangCanNgay()),
-                tb(value: AppUtil(solarDateTime: _date!).getTangCanThang()),
-                tb(value: AppUtil(solarDateTime: _date!).getTangCanNam()),
+                tb(
+                  value:
+                      AppUtil(solarDateTime: _date!).getTangCanGio().toString(),
+                ),
+                tb(
+                  value:
+                      AppUtil(
+                        solarDateTime: _date!,
+                      ).getTangCanNgay().toString(),
+                ),
+                tb(
+                  value:
+                      AppUtil(
+                        solarDateTime: _date!,
+                      ).getTangCanThang().toString(),
+                ),
+                tb(
+                  value:
+                      AppUtil(solarDateTime: _date!).getTangCanNam().toString(),
+                ),
               ],
             ),
           ),

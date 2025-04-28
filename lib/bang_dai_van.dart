@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:horoscope_app/lunar/calendar/util/AppUtil.dart'; // Cần import material
+import 'package:horoscope_app/utils/AppUtil.dart'; // Cần import material
 
 class DaiVanTable extends StatefulWidget {
   // Thêm tham số để nhận năm bắt đầu Đại Vận từ bên ngoài
@@ -170,7 +170,7 @@ class _DaiVanTableState extends State<DaiVanTable> {
         ),
         _buildItem(
           title: 'Tàng Can',
-          value: AppUtil(solarDateTime: solarDate).getTangCanNam(),
+          value: AppUtil(solarDateTime: solarDate).getTangCanNam().toString(),
         ),
         _buildItem(
           title: 'Trường Sinh',

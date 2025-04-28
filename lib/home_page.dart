@@ -7,7 +7,7 @@ import 'package:horoscope_app/picker_util.dart';
 import 'package:horoscope_app/styles.dart';
 import 'package:horoscope_app/ticket_page.dart';
 import 'package:horoscope_app/widgets/app_input.dart';
-import 'package:horoscope_app/widgets/tutru.dart';
+// import 'package:horoscope_app/widgets/tutru.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {

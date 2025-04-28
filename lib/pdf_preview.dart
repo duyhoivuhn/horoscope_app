@@ -6,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:horoscope_app/data_model.dart';
 import 'package:horoscope_app/gen/assets.gen.dart';
 import 'package:horoscope_app/lunar/calendar/Lunar.dart';
-import 'package:horoscope_app/lunar/calendar/util/AppUtil.dart';
+import 'package:horoscope_app/utils/AppUtil.dart';
 import 'package:horoscope_app/thiencan.dart';
+import 'package:horoscope_app/utils/string_ext.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -76,14 +77,18 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
     final pdf = pw.Document();
 
-    final font = await rootBundle.load(Assets.fonts.robotoMono);
-    final ttf = pw.Font.ttf(font);
+    // Load the font
+    final fontData = await rootBundle.load(Assets.fonts.robotoMono);
+    final ttf = pw.Font.ttf(fontData);
 
-    baseTextStyle = pw.TextStyle(fontSize: 12, font: ttf);
-
+    // Define base text style using the loaded font
+    baseTextStyle = pw.TextStyle(
+      fontSize: 10,
+      font: ttf,
+    ); // Reduced font size slightly
     pdf.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
+        pageFormat: PdfPageFormat.a3,
         margin: pw.EdgeInsets.all(16),
         build:
             (context) => [
@@ -91,132 +96,57 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 padding: const pw.EdgeInsets.all(8),
                 decoration: pw.BoxDecoration(
                   borderRadius: pw.BorderRadius.circular(2),
-                  border: pw.Border.all(color: PdfColors.red),
+                  border: pw.Border.all(
+                    color: PdfColors.grey,
+                  ), // Changed border color
                 ),
                 child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(),
-                    pw.SizedBox(height: 16),
-                    _buildContent1(),
+                    _buildHeader(ttf), // Pass font
+                    pw.SizedBox(height: 8),
+                    _buildContent1(ttf), // Pass font
 
-                    pw.SizedBox(height: 20),
-                    pw.Text(
-                      'ĐẠI VẬN',
-                      style: pw.TextStyle(
-                        fontSize: 18,
-                        fontWeight: pw.FontWeight.bold,
-                      ),
-                    ),
-                    pw.SizedBox(height: 10),
-                    pw.Table(
-                      border: pw.TableBorder.all(width: 0.5),
-                      children: [
-                        pw.TableRow(
-                          children: List.generate(
-                            8,
-                            (index) => pw.Center(
-                              child: pw.Text(
-                                'Năm ${2020 + index * 10}',
-                                style: baseTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                        pw.TableRow(
-                          children: List.generate(
-                            8,
-                            (index) => pw.Center(
-                              child: pw.Text('Đinh Sửu', style: baseTextStyle),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    pw.SizedBox(height: 20),
-                    pw.Text(
-                      'LƯU NIÊN',
-                      style: pw.TextStyle(
-                        fontSize: 18,
-                        fontWeight: pw.FontWeight.bold,
-                      ),
-                    ),
-                    pw.SizedBox(height: 10),
-                    pw.Table(
-                      border: pw.TableBorder.all(width: 0.5),
-                      children: [
-                        pw.TableRow(
-                          children: List.generate(
-                            6,
-                            (index) => pw.Center(
-                              child: pw.Text(
-                                'Năm ${2020 + index}',
-                                style: baseTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                        pw.TableRow(
-                          children: List.generate(
-                            6,
-                            (index) => pw.Center(
-                              child: pw.Text('Can Chi', style: baseTextStyle),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    pw.SizedBox(height: 20),
-                    pw.Text(
-                      'LƯU NGUYỆT (2025)',
-                      style: pw.TextStyle(
-                        fontSize: 18,
-                        fontWeight: pw.FontWeight.bold,
-                      ),
-                    ),
-                    pw.SizedBox(height: 10),
-                    pw.Table(
-                      border: pw.TableBorder.all(width: 0.5),
-                      children: [
-                        pw.TableRow(
-                          children: List.generate(
-                            6,
-                            (index) => pw.Center(
-                              child: pw.Text(
-                                'Tháng ${index + 1}',
-                                style: baseTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                        pw.TableRow(
-                          children: List.generate(
-                            6,
-                            (index) => pw.Center(
-                              child: pw.Text(
-                                'Thiên can địa chi',
-                                style: baseTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    pw.SizedBox(height: 20),
-                    pw.Text(
-                      'THÔNG TIN KHÁC',
-                      style: pw.TextStyle(
-                        fontSize: 18,
-                        fontWeight: pw.FontWeight.bold,
-                      ),
-                    ),
-                    pw.SizedBox(height: 10),
-                    pw.Text('Thập Thần: Chính Tài', style: baseTextStyle),
-                    pw.Text('Mệnh Cục: Kim sinh Thuỷ', style: baseTextStyle),
-                    pw.Text(
-                      'Tiết Khí: Thanh Minh - 05/04/1995 (13:08)',
-                      style: baseTextStyle,
-                    ),
+                    pw.SizedBox(height: 4),
+                    _buildContent2(ttf),
+                    pw.SizedBox(height: 4),
+                    _buildContent3(ttf),
+                    pw.SizedBox(height: 4),
+                    _buildContent4(ttf),
+                    // pw.SizedBox(height: 4),
+                    // _buildContent5(ttf),
+                    // pw.SizedBox(height: 4),
+                    // _buildContent7(),
+                  ],
+                ),
+              ),
+            ],
+      ),
+    );
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a3,
+        margin: pw.EdgeInsets.all(16),
+        build:
+            (context) => [
+              pw.Container(
+                padding: const pw.EdgeInsets.all(8),
+                decoration: pw.BoxDecoration(
+                  borderRadius: pw.BorderRadius.circular(2),
+                  border: pw.Border.all(
+                    color: PdfColors.grey,
+                  ), // Changed border color
+                ),
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    // pw.SizedBox(height: 4),
+                    // _buildContent4(ttf),
+                    pw.SizedBox(height: 4),
+                    _buildContent5(ttf),
+                    pw.SizedBox(height: 4),
+                    _buildContent7(),
                   ],
                 ),
               ),
@@ -225,7 +155,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
 
     final output = await getTemporaryDirectory();
-    final file = File('${output.path}/lenh_bai_bat_tu_beautiful.pdf');
+    final file = File('${output.path}/lenh_bai_bat_tu_v2.pdf');
     await file.writeAsBytes(await pdf.save());
 
     setState(() {
@@ -233,76 +163,90 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     });
   }
 
-  pw.Widget coloredCell({required String text, PdfColor? color, bool? isBold}) {
-    return pw.SizedBox(
-      height: 48,
-      child: pw.Center(
-        child: pw.Text(
-          text,
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-        ),
-      ),
-    );
-  }
+  // Removed coloredCell as tb function handles styling
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Xem File PDF')),
+      appBar: AppBar(title: const Text('Xem Lệnh Bài Bát Tự')),
       body:
           pdfFile == null
               ? const Center(child: CircularProgressIndicator())
               : PdfView(
+                // 1. Đảm bảo cuộn dọc
+                scrollDirection: Axis.vertical,
+                // 2. Tắt page snapping để cuộn liền mạch
+                pageSnapping: false,
+                // 3. Đặt nền trong suốt để tránh khoảng trống trực quan
+                backgroundDecoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ), // Hoặc bạn có thể thử đặt là null
+                // Tùy chọn: Có thể thử physics khác nếu muốn
+                // physics: const ClampingScrollPhysics(),
                 controller: PdfController(document: createPdfDocument()),
               ),
     );
   }
 
   Future<pdfx.PdfDocument> createPdfDocument() async {
-    return pdfx.PdfDocument.openFile(pdfFile!.path);
+    // Ensure the file exists before trying to open it
+    if (await pdfFile!.exists()) {
+      return pdfx.PdfDocument.openFile(pdfFile!.path);
+    } else {
+      throw Exception("PDF file not found at path: ${pdfFile!.path}");
+    }
   }
 
-  _buildHeader() {
+  pw.Widget _buildHeader(pw.Font ttf) {
+    // Use the passed font
+    final headerTextStyle = baseTextStyle?.copyWith(font: ttf);
+    final boldRedStyle = headerTextStyle?.copyWith(
+      color: PdfColors.red,
+      fontWeight: pw.FontWeight.bold,
+    );
+    final boldBlackStyle = headerTextStyle?.copyWith(
+      color: PdfColors.black,
+      fontWeight: pw.FontWeight.bold,
+    );
+
     return pw.Container(
-      decoration: pw.BoxDecoration(color: PdfColors.amber),
-      padding: pw.EdgeInsets.all(12),
+      decoration: pw.BoxDecoration(
+        color: PdfColors.amber100, // Lighter amber
+        border: pw.Border.all(color: PdfColors.amber700),
+        borderRadius: pw.BorderRadius.circular(4),
+      ),
+      padding: pw.EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       child: pw.Row(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text(
-            'Lệnh bài bát tự MANH PHÁI',
-            style: baseTextStyle?.apply(color: PdfColors.red),
-          ),
-          pw.SizedBox(width: 16),
+          // Consider adding a logo if you have one as pw.Image
           pw.Expanded(
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
+                pw.Text(
+                  'Lệnh bài bát tự MANH PHÁI',
+                  style: boldRedStyle?.copyWith(fontSize: 14), // Larger title
+                ),
+                pw.SizedBox(height: 8),
                 pw.RichText(
                   text: pw.TextSpan(
                     children: [
-                      pw.TextSpan(text: 'Họ và Tên: ', style: baseTextStyle),
+                      pw.TextSpan(text: 'Họ và Tên: ', style: headerTextStyle),
                       pw.TextSpan(
                         text: widget.model.fullName ?? '',
-                        style: baseTextStyle?.copyWith(
-                          color: PdfColors.red,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
+                        style: boldRedStyle,
                       ),
                     ],
                   ),
                 ),
-
                 pw.RichText(
                   text: pw.TextSpan(
                     children: [
-                      pw.TextSpan(text: 'Giới tính: ', style: baseTextStyle),
+                      pw.TextSpan(text: 'Giới tính: ', style: headerTextStyle),
                       pw.TextSpan(
                         text: widget.model.generate ?? '',
-                        style: baseTextStyle?.copyWith(
-                          color: PdfColors.black,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
+                        style: boldBlackStyle,
                       ),
                     ],
                   ),
@@ -310,14 +254,11 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 pw.RichText(
                   text: pw.TextSpan(
                     children: [
-                      pw.TextSpan(text: 'Dương Lịch: ', style: baseTextStyle),
+                      pw.TextSpan(text: 'Dương Lịch: ', style: headerTextStyle),
                       pw.TextSpan(
                         text:
-                            '${widget.model.day}/${widget.model.month}/${widget.model.year}',
-                        style: baseTextStyle?.copyWith(
-                          color: PdfColors.red,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
+                            '${widget.model.day}/${widget.model.month}/${widget.model.year} (Giờ ${widget.model.hour}:${widget.model.minute})', // Added time
+                        style: boldRedStyle,
                       ),
                     ],
                   ),
@@ -325,14 +266,11 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 pw.RichText(
                   text: pw.TextSpan(
                     children: [
-                      pw.TextSpan(text: 'Âm Lịch: ', style: baseTextStyle),
+                      pw.TextSpan(text: 'Âm Lịch: ', style: headerTextStyle),
                       pw.TextSpan(
                         text:
-                            '${lunarDate?.getDay()}/${lunarDate?.getMonth()}/${lunarDate?.getYear()}',
-                        style: baseTextStyle?.copyWith(
-                          color: PdfColors.red,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
+                            '${lunarDate?.getDay()}/${lunarDate?.getMonth()}/${lunarDate?.getYear()}', // More detailed Lunar date
+                        style: boldRedStyle,
                       ),
                     ],
                   ),
@@ -345,100 +283,470 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
-  _buildContent1() {
-    return pw.Table(
-      border: pw.TableBorder.all(width: 0.5, color: PdfColors.black),
+  //MARK: build content 1
+  pw.Widget _buildContent1(pw.Font ttf) {
+    // Use the passed font
+    baseTextStyle = baseTextStyle?.copyWith(font: ttf);
+
+    return pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.TableRow(
-          decoration: pw.BoxDecoration(color: PdfColors.amber),
-          children: [
-            tb(value: 'Giờ', bg: PdfColors.amber, isBold: true),
-            tb(value: 'Ngày', bg: PdfColors.amber, isBold: true),
-            tb(value: 'Tháng', bg: PdfColors.amber, isBold: true),
-            tb(value: 'Năm', bg: PdfColors.amber, isBold: true),
-          ],
-        ),
-        pw.TableRow(
-          decoration: pw.BoxDecoration(color: PdfColors.amber),
-          children: [
-            tb(
-              value: widget.model.hour?.toString() ?? '',
-              bg: PdfColors.amber,
-              isBold: true,
-              titleColor: PdfColors.red,
-            ),
-            tb(
-              value: widget.model.day?.toString() ?? '',
-              bg: PdfColors.amber,
-              isBold: true,
-              titleColor: PdfColors.red,
-            ),
-            tb(
-              value: widget.model.month?.toString() ?? '',
-              bg: PdfColors.amber,
-              isBold: true,
-              titleColor: PdfColors.red,
-            ),
-            tb(
-              value: widget.model.year?.toString() ?? '',
-              bg: PdfColors.amber,
-              isBold: true,
-              titleColor: PdfColors.red,
-            ),
-          ],
-        ),
-        pw.TableRow(
-          decoration: pw.BoxDecoration(color: PdfColors.amber),
-          children: [
-            tb(value: AppUtil(solarDateTime: solarDate!).getThapThanGio()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getThapThanNgay()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getThapThanThang()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getThapThanNam()),
-          ],
-        ),
-        pw.TableRow(
-          decoration: pw.BoxDecoration(color: PdfColors.amber),
-          children: [
-            tb(value: AppUtil(solarDateTime: solarDate!).getThienCanGio()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getThienCanNgay()),
-            tb(
-              value: ThienCan.getThienCanThang(
-                year: widget.model.year ?? 2025,
-                month: widget.model.month ?? 1,
+        //table1
+        pw.Expanded(
+          flex: 5, // Adjusted flex
+          child: pw.Table(
+            // columnWidths: baziColumnWidths, // Apply equal widths
+            border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+            children: [
+              // Header Row 1: Titles
+              pw.TableRow(
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.blueGrey50,
+                ), // Header color
+                children: [
+                  tb(value: 'Giờ', isBold: true, bg: PdfColors.yellow),
+                  tb(value: 'Ngày', isBold: true, bg: PdfColors.yellow),
+                  tb(value: 'Tháng', isBold: true, bg: PdfColors.yellow),
+                  tb(value: 'Năm', isBold: true, bg: PdfColors.yellow),
+                ],
               ),
-            ),
-            tb(value: AppUtil(solarDateTime: solarDate!).getThienCanNam()),
-          ],
+              // Header Row 2: Solar Date/Time
+              pw.TableRow(
+                decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
+                children: [
+                  tb(
+                    value: widget.model.hour?.toString() ?? '',
+                    isBold: true,
+                    titleColor: PdfColors.red,
+                    bg: PdfColors.yellow,
+                  ),
+                  tb(
+                    value: widget.model.day?.toString() ?? '',
+                    isBold: true,
+                    titleColor: PdfColors.red,
+                    bg: PdfColors.yellow,
+                  ),
+                  tb(
+                    value: widget.model.month?.toString() ?? '',
+                    isBold: true,
+                    titleColor: PdfColors.red,
+                    bg: PdfColors.yellow,
+                  ),
+                  tb(
+                    value: widget.model.year?.toString() ?? '',
+                    isBold: true,
+                    titleColor: PdfColors.red,
+                    bg: PdfColors.yellow,
+                  ),
+                ],
+              ),
+              // Row 3: Thập Thần (Ten Gods)
+              pw.TableRow(
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThapThanGio(),
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThapThanNgay(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getThapThanThang(),
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThapThanNam(),
+                  ),
+                ],
+              ),
+              // Row 4: Thiên Can (Heavenly Stems)
+              pw.TableRow(
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.lightGreen50,
+                ), // Highlight Can row
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThienCanGio(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanGio().toColor(),
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThienCanNgay(),
+                    isBold: true,
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanNgay().toColor(), // Highlight Day Master
+                  ),
+                  tb(
+                    value: ThienCan.getThienCanThang(
+                      year: widget.model.year ?? 2025,
+                      month: widget.model.month ?? 1,
+                    ),
+                    titleColor:
+                        ThienCan.getThienCanThang(
+                          year: widget.model.year ?? 2025,
+                          month: widget.model.month ?? 1,
+                        ).toColor(),
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThienCanNam(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanNam().toColor(),
+                    isBold: true,
+                  ),
+                ],
+              ),
+              // Row 5: Địa Chi (Earthly Branches)
+              pw.TableRow(
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.orange50,
+                ), // Highlight Chi row
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiGio(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiGio().toColor(),
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNgay(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiNgay().toColor(),
+                    isBold: true,
+                  ), // Corrected to getDiaChiNgay
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiThang(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiThang().toColor(),
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNam(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiNam().toColor(),
+                    isBold: true,
+                  ),
+                ],
+              ),
+              // Row 6: Tàng Can (Hidden Stems)
+              pw.TableRow(
+                children: [
+                  pw.Row(
+                    mainAxisSize: pw.MainAxisSize.max,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanGio().map((e) => tb(value: e)).toList(),
+                  ),
+                  pw.Row(
+                    mainAxisSize: pw.MainAxisSize.max,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanNgay().map((e) => tb(value: e)).toList(),
+                  ),
+                  pw.Row(
+                    mainAxisSize: pw.MainAxisSize.max,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanThang().map((e) => tb(value: e)).toList(),
+                  ),
+                  pw.Row(
+                    mainAxisSize: pw.MainAxisSize.max,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanNam().map((e) => tb(value: e)).toList(),
+                  ),
+                ],
+              ),
+              // Row 7: Trường Sinh (Life Cycle Phases)
+              pw.TableRow(
+                children: [
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhGio(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhNgay(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhThang(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhNam(),
+                  ),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                  tb(value: ''),
+                ],
+              ),
+              // Row 8: Nạp Âm (Na Yin)
+              pw.TableRow(
+                children: [
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmThang()),
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNam()),
+                ],
+              ),
+            ],
+          ),
         ),
-        pw.TableRow(
-          decoration: pw.BoxDecoration(color: PdfColors.amber),
-          children: [
-            tb(value: AppUtil(solarDateTime: solarDate!).getDiaChiGio()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getDiaChiGio()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getDiaChiThang()),
-            tb(value: AppUtil(solarDateTime: solarDate!).getDiaChiNam()),
-          ],
+        pw.SizedBox(width: 10), // Reduced spacing
+        //table2
+        pw.Expanded(
+          flex: 3, // Adjusted flex
+          child: pw.Table(
+            border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+            children: [
+              pw.TableRow(
+                decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
+                children: [
+                  // Combined Đại Vận Header
+                  tb(value: 'Đại Vận', isBold: true, bg: PdfColors.yellow),
+                  // Combined Tuổi Header
+                  tb(value: 'Lưu Niên', isBold: true, bg: PdfColors.yellow),
+                ],
+              ),
+              pw.TableRow(
+                decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
+                children: [
+                  // Combined Đại Vận Header
+                  tb(value: '1995', isBold: true, bg: PdfColors.yellow),
+                  // Combined Tuổi Header
+                  tb(value: '2025', isBold: true, bg: PdfColors.yellow),
+                ],
+              ),
+
+              // Row 3: Thập Thần (Ten Gods)
+              pw.TableRow(
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThapThanGio(),
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThapThanNgay(),
+                  ),
+                ],
+              ),
+              // Row 4: Thiên Can (Heavenly Stems)
+              pw.TableRow(
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.lightGreen50,
+                ), // Highlight Can row
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThienCanGio(),
+                    bg: PdfColors.lightGreen50,
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getThienCanNgay(),
+                    bg: PdfColors.lightGreen50,
+                    isBold: true,
+                    titleColor: PdfColors.blue, // Highlight Day Master
+                  ),
+                ],
+              ),
+              // Row 5: Địa Chi (Earthly Branches)
+              pw.TableRow(
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.orange50,
+                ), // Highlight Chi row
+                children: [
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiGio(),
+                    bg: PdfColors.orange50,
+                    isBold: true,
+                  ),
+                  tb(
+                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNgay(),
+                    bg: PdfColors.orange50,
+                    isBold: true,
+                  ), // Corrected to getDiaChiNgay
+                ],
+              ),
+              // Row 6: Tàng Can (Hidden Stems)
+              pw.TableRow(
+                children: [
+                  tb(
+                    value:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanGio().toString(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(
+                          solarDateTime: _date!,
+                        ).getTangCanNgay().toString(),
+                  ),
+                ],
+              ),
+              // Row 7: Trường Sinh (Life Cycle Phases)
+              pw.TableRow(
+                children: [
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhGio(),
+                  ),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: solarDate!).getTruongSinhNgay(),
+                  ),
+                ],
+              ),
+              // Row 8: Nạp Âm (Na Yin)
+              pw.TableRow(
+                children: [
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
+                ],
+              ),
+              pw.TableRow(children: [tb(value: ''), tb(value: '')]),
+              pw.TableRow(
+                children: [
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmGio()),
+                  tb(value: AppUtil(solarDateTime: solarDate!).getNapAmNgay()),
+                ],
+              ),
+            ],
+          ),
         ),
-        // pw.TableRow(
-        //   children: [
-        //     coloredCell('MẬU', PdfColors.blue),
-        //     coloredCell('CANH', PdfColors.red),
-        //     coloredCell('CANH', PdfColors.red),
-        //     coloredCell('ẤT', PdfColors.orange),
-        //   ],
-        // ),
-        // pw.TableRow(
-        //   children: [
-        //     coloredCell('TÝ', PdfColors.blue),
-        //     coloredCell('THÌN', PdfColors.red),
-        //     coloredCell('THÌN', PdfColors.red),
-        //     coloredCell('HỢI', PdfColors.orange),
-        //   ],
-        // ),
+        pw.Expanded(
+          flex: 1, // Adjusted flex
+          child: pw.Table(
+            border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+            children: [
+              pw.TableRow(
+                decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
+                children: [
+                  tb(
+                    value: 'Dương Lịch',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    height: 48,
+                  ),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Xuất Can', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Thiên Can', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Tàng Can', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(
+                    value: 'Thần sát\n đặt biệt',
+                    isBold: true,
+                    bg: PdfColors.grey300,
+                    height: 48,
+                  ),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Trường Sinh', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  tb(value: 'Nạp Âm', isBold: true, bg: PdfColors.grey300),
+                ],
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
+  // pw.Widget _buildContent5(pw.Font ttf) {
+  //   return pw.Column(
+  //     children: [
+  //       pw.Text(
+  //         'THÔNG TIN KHÁC',
+  //         style: pw.TextStyle(
+  //           fontSize: 14,
+  //           fontWeight: pw.FontWeight.bold,
+  //           font: ttf,
+  //         ),
+  //       ),
+  //       pw.SizedBox(height: 8),
+  //       pw.Text('Thập Thần: Chính Tài', style: baseTextStyle), // Example data
+  //       pw.Text(
+  //         'Mệnh Cục: Kim sinh Thuỷ',
+  //         style: baseTextStyle,
+  //       ), // Example data
+  //       pw.Text(
+  //         'Tiết Khí: ${AppUtil(solarDateTime: solarDate!).getTietKhiHienTaiCuaNgay()}', // Use actual data
+  //         style: baseTextStyle,
+  //       ),
+  //       pw.Text(
+  //         'Bành Tổ Bách Kỵ (Can ngày): ${lunar?.getPengZuGan() ?? ''}',
+  //         style: baseTextStyle,
+  //       ),
+  //       pw.Text(
+  //         'Bành Tổ Bách Kỵ (Chi ngày): ${lunar?.getPengZuZhi() ?? ''}',
+  //         style: baseTextStyle,
+  //       ),
+  //       pw.SizedBox(height: 10),
+  //     ],
+  //   );
+  // }
+
+  // Helper function for creating table cells (tb = table box)
   pw.Widget tb({
     PdfColor? bg,
     PdfColor? titleColor,
@@ -447,25 +755,835 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     double? height,
     bool? isBold,
   }) {
-    return pw.Expanded(
-      child: pw.Container(
-        height: height ?? 40,
-        decoration: pw.BoxDecoration(
-          color: bg ?? PdfColors.white,
-          border: pw.Border.all(color: PdfColors.grey300),
+    // Ensure baseTextStyle is initialized
+    final effectiveTextStyle = (baseTextStyle ?? pw.TextStyle(fontSize: 8))
+        .copyWith(
+          color: titleColor ?? PdfColors.black,
+          fontWeight:
+              (isBold ?? false) ? pw.FontWeight.bold : pw.FontWeight.normal,
+          fontSize: size ?? 10, // Use provided size or default
+        );
+
+    return pw.Container(
+      height: height ?? 24, // Default height, adjust as needed
+      padding: pw.EdgeInsets.symmetric(
+        horizontal: 2,
+        vertical: 4,
+      ), // Add padding
+      decoration: pw.BoxDecoration(
+        color: bg ?? PdfColors.white,
+        border: pw.Border.all(
+          color: PdfColors.grey600,
+          width: 0.5,
+        ), // Thinner border
+      ),
+      child: pw.Center(
+        child: pw.Text(
+          value,
+          style: effectiveTextStyle,
+          textAlign: pw.TextAlign.center,
+          maxLines: 2, // Allow text wrapping
+          overflow: pw.TextOverflow.clip, // Clip if still too long
         ),
-        child: pw.Center(
-          child: pw.Text(
-            value,
-            style: baseTextStyle?.copyWith(
-              color: titleColor ?? PdfColors.black,
-              fontWeight:
-                  (isBold ?? false) ? pw.FontWeight.bold : pw.FontWeight.normal,
-              fontSize: size ?? 12,
-            ),
-            textAlign: pw.TextAlign.center,
+      ),
+    );
+  }
+
+  _buildContent2(ttf) {
+    return pw.Column(
+      children: [
+        tb(value: 'Đại Vận', isBold: true, bg: PdfColors.yellow, height: 24),
+        pw.SizedBox(
+          height: 240,
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Expanded(
+                flex: 11,
+                child: pw.Table(
+                  // columnWidths: columnWidths8, // Apply equal widths
+                  border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                  children: [
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          value: 'Năm ${2020 + index * 10}',
+                          isBold: true,
+                          bg:
+                              PdfColors
+                                  .grey200, // Light grey background for header
+                        ),
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              pw.Table(
+                border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                children: [
+                  pw.TableRow(
+                    children: [
+                      tb(value: '', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Xuất Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thiên Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Tàng Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thần sát\n đặt biệt',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                        height: 48,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Trường Sinh',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Nạp Âm', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
+      ],
+    );
+  }
+
+  _buildContent3(pw.Font ttf) {
+    return pw.Column(
+      children: [
+        tb(value: 'Lưu Niên', isBold: true, bg: PdfColors.yellow, height: 24),
+        pw.SizedBox(
+          height: 240,
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Expanded(
+                flex: 11,
+                child: pw.Table(
+                  // columnWidths: columnWidths8, // Apply equal widths
+                  border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                  children: [
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          value: 'Năm ${2020 + index * 10}',
+                          isBold: true,
+                          bg:
+                              PdfColors
+                                  .grey200, // Light grey background for header
+                        ),
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              pw.Table(
+                border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                children: [
+                  pw.TableRow(
+                    children: [
+                      tb(value: '', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Xuất Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thiên Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Tàng Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thần sát\n đặt biệt',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                        height: 48,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Trường Sinh',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Nạp Âm', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildContent4(pw.Font ttf) {
+    return pw.Column(
+      children: [
+        tb(value: 'Lưu Nguyệt', isBold: true, bg: PdfColors.yellow, height: 24),
+        pw.SizedBox(
+          height: 240,
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Expanded(
+                flex: 11,
+                child: pw.Table(
+                  // columnWidths: columnWidths8, // Apply equal widths
+                  border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                  children: [
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          value: 'Năm ${2020 + index * 10}',
+                          isBold: true,
+                          bg:
+                              PdfColors
+                                  .grey200, // Light grey background for header
+                        ),
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(value: ''), // Example data
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              pw.Table(
+                border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                children: [
+                  pw.TableRow(
+                    children: [
+                      tb(value: '', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Xuất Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thiên Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Tàng Can',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Thần sát\n đặt biệt',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                        height: 48,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(
+                        value: 'Trường Sinh',
+                        isBold: true,
+                        bg: PdfColors.grey300,
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      tb(value: 'Nạp Âm', isBold: true, bg: PdfColors.grey300),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildContent7() {
+    final chars = [
+      'TS',
+      'MD',
+      'QD',
+      'LQ',
+      'ĐV',
+      'S',
+      'B',
+      'T',
+      'M',
+      'TU',
+      'TH',
+      'D',
+    ];
+    final fullChars = [
+      'Trường Sinh', // 长生 (Tràng Sinh)
+      'Mộc Dục', // 沐浴
+      'Quan Đới', // 冠带 (Quan Đái)
+      'Lâm Quan', // 临官
+      'Đế Vượng', // 帝旺
+      'Suy', // 衰
+      'Bệnh', // 病
+      'Tử', // 死
+      'Mộ', // 墓
+      'Tuyệt', // 绝
+      'Thai', // 胎
+      'Dưỡng',
+    ];
+
+    return pw.SizedBox(
+      height: 68,
+      child: pw.Row(
+        children: [
+          pw.Expanded(
+            flex: 12,
+            child: pw.Row(
+              children:
+                  List.generate(12, (index) {
+                    return pw.Expanded(
+                      child: pw.Column(
+                        children: [
+                          tb(
+                            value: chars[index].toString(),
+                            isBold: true,
+                            bg: PdfColors.grey200,
+                            size: 8,
+                          ),
+                          tb(value: fullChars[index], size: 8, height: 44),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+            ),
+          ),
+          pw.Expanded(
+            flex: 1,
+            child: pw.Table(
+              // columnWidths: columnWidths6, // Apply equal widths
+              border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+              children: [
+                pw.TableRow(
+                  children: [
+                    tb(
+                      value: 'Vòng\nTrường Sinh',
+                      height: 68,
+                      bg: PdfColors.yellow,
+                    ),
+                  ], // Example data
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildContent5(pw.Font ttf) {
+    return pw.SizedBox(
+      height: 200,
+      child: pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        mainAxisSize: pw.MainAxisSize.max,
+        children: [
+          pw.Expanded(
+            flex: 2,
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+              children: [
+                pw.Table(
+                  border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                  children: [
+                    pw.TableRow(
+                      children: [
+                        tb(value: 'Thái Cung', bg: PdfColors.yellow),
+                        tb(value: 'Mệnh Cung', bg: PdfColors.yellow),
+                        tb(value: 'Thai Tức', bg: PdfColors.yellow),
+                        tb(value: 'Trụ Phút', bg: PdfColors.yellow),
+                      ], // Example data
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(value: ''),
+                        tb(value: ''),
+                        tb(value: ''),
+                        tb(value: ''),
+                      ], // Example data
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(value: ''),
+                        tb(value: ''),
+                        tb(value: ''),
+                        tb(value: ''),
+                      ], // Example data
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 10),
+                pw.SizedBox(
+                  width: 200,
+                  child: pw.Table(
+                    // columnWidths: columnWidths6, // Apply equal widths
+                    border: pw.TableBorder.all(
+                      width: 0.5,
+                      color: PdfColors.grey,
+                    ),
+                    children: [
+                      pw.TableRow(
+                        children: [
+                          pw.SizedBox(
+                            width: 60,
+                            child: tb(value: 'Đại Vận', bg: PdfColors.yellow),
+                          ),
+                          pw.SizedBox(width: 160, child: tb(value: 'abc')),
+                        ], // Example data
+                      ),
+                      pw.TableRow(
+                        children: [
+                          tb(value: 'Tiết Khí', bg: PdfColors.yellow),
+                          tb(value: 'avc'),
+                        ], // Example data
+                      ),
+                    ],
+                  ),
+                ),
+                pw.SizedBox(height: 10),
+                pw.SizedBox(
+                  child: pw.Table(
+                    // columnWidths: columnWidths6, // Apply equal widths
+                    border: pw.TableBorder.all(
+                      width: 0.5,
+                      color: PdfColors.grey,
+                    ),
+                    children: [
+                      pw.TableRow(
+                        children: [
+                          pw.SizedBox(width: 40, child: tb(value: 'Kim')),
+                          pw.SizedBox(width: 40, child: tb(value: 'Thuỷ')),
+                          pw.SizedBox(width: 40, child: tb(value: 'Mộc')),
+                          pw.SizedBox(width: 40, child: tb(value: 'Hoả')),
+                          pw.SizedBox(width: 40, child: tb(value: 'Thổ')),
+                        ], // Example data
+                      ),
+                      pw.TableRow(
+                        children: [
+                          tb(
+                            value: '',
+                            bg: PdfColorHsl.fromRgb(
+                              147 / 255,
+                              149 / 255,
+                              152 / 255,
+                            ),
+                          ),
+                          tb(
+                            value: '',
+                            bg: PdfColorHsl.fromRgb(
+                              96 / 255,
+                              157 / 255,
+                              248 / 255,
+                            ),
+                          ),
+                          tb(
+                            value: '',
+                            bg: PdfColorHsl.fromRgb(
+                              125 / 255,
+                              183 / 255,
+                              78 / 255,
+                            ),
+                          ),
+                          tb(
+                            value: '',
+                            bg: PdfColorHsl.fromRgb(
+                              230 / 255,
+                              0 / 255,
+                              10 / 255,
+                            ),
+                          ),
+                          tb(
+                            value: '',
+                            bg: PdfColorHsl.fromRgb(
+                              111 / 255,
+                              78 / 255,
+                              48 / 255,
+                            ),
+                          ),
+                        ], // Example data
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          pw.SizedBox(width: 16),
+          pw.Expanded(flex: 2, child: _buildTableThapThan()),
+          pw.SizedBox(width: 16),
+          pw.Expanded(flex: 3, child: _buildTableThanSat()),
+        ],
+      ),
+    );
+  }
+
+  _buildTableThapThan() {
+    return pw.SizedBox(
+      height: 144,
+      child: pw.Column(
+        children: [
+          pw.SizedBox(
+            height: 24,
+            child: tb(value: 'Thập Thần', bg: PdfColors.yellow, height: 24),
+          ),
+
+          pw.Expanded(
+            child: pw.Table(
+              border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 30, child: tb(value: 'TK')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Tỷ Kiên')),
+                    pw.SizedBox(width: 30, child: tb(value: 'KT')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Kiếp Tài')),
+                  ], // Example data
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 30, child: tb(value: 'TH')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Thực Thần')),
+                    pw.SizedBox(width: 30, child: tb(value: 'TQ')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Thương Quan')),
+                  ], // Example data
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 30, child: tb(value: 'CA')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Chính Ấn')),
+                    pw.SizedBox(width: 30, child: tb(value: 'TA')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Thiên Ấn')),
+                  ], // Example data
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 30, child: tb(value: 'CT')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Chính Tài')),
+                    pw.SizedBox(width: 30, child: tb(value: 'TT')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Thiên Tài')),
+                  ], // Example data
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 30, child: tb(value: 'CQ')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Chính Quan')),
+                    pw.SizedBox(width: 30, child: tb(value: 'TS')),
+                    pw.SizedBox(width: 60, child: tb(value: 'Thất Sát')),
+                  ], // Example data
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildTableThanSat() {
+    return pw.SizedBox(
+      height: 144,
+      child: pw.Column(
+        children: [
+          pw.SizedBox(
+            height: 24,
+            child: tb(
+              value: 'Thần Sát Nguyên Cục',
+              bg: PdfColors.yellow,
+              height: 24,
+            ),
+          ),
+
+          pw.Expanded(
+            child: pw.Table(
+              border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: 'Giờ', bg: PdfColors.grey200),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: 'Ngày', bg: PdfColors.grey200),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: 'Tháng', bg: PdfColors.grey200),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: 'Năm', bg: PdfColors.grey200),
+                    ),
+                  ], // Example data
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.SizedBox(width: 60, child: tb(value: '')),
+                    pw.SizedBox(width: 60, child: tb(value: '')),
+                    pw.SizedBox(width: 60, child: tb(value: '')),
+                    pw.SizedBox(width: 60, child: tb(value: '')),
+                  ], // Example data
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

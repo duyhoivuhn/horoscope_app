@@ -197,24 +197,24 @@ class AppUtil {
     return lunarDate.getYearZhi();
   }
 
-  String getTangCanGio() {
+  List<String> getTangCanGio() {
     final list = LunarUtil.ZHI_HIDE_GAN[getDiaChiGio()];
-    return (list ?? []).toString();
+    return (list ?? []);
   }
 
-  String getTangCanNgay() {
+  List<String> getTangCanNgay() {
     final list = LunarUtil.ZHI_HIDE_GAN[getDiaChiNgay()];
-    return (list ?? []).toString();
+    return (list ?? []);
   }
 
-  String getTangCanThang() {
+  List<String> getTangCanThang() {
     final list = LunarUtil.ZHI_HIDE_GAN[getDiaChiThang()];
-    return (list ?? []).toString();
+    return (list ?? []);
   }
 
-  String getTangCanNam() {
+  List<String> getTangCanNam() {
     final list = LunarUtil.ZHI_HIDE_GAN[getDiaChiNam()];
-    return (list ?? []).toString();
+    return (list ?? []);
   }
 
   String getTruongSinhGio() {
