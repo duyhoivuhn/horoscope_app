@@ -83,8 +83,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
     // Define base text style using the loaded font
     baseTextStyle = pw.TextStyle(
-      fontSize: 8,
-      font: ttf,
+      fontSize: 10,
+      // font: ttf,
       fontWeight: pw.FontWeight.bold,
     ); // Reduced font size slightly
     pdf.addPage(
@@ -114,10 +114,6 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     _buildContent3(ttf),
                     pw.SizedBox(height: 4),
                     _buildContent4(ttf),
-                    // pw.SizedBox(height: 4),
-                    // _buildContent5(ttf),
-                    // pw.SizedBox(height: 4),
-                    // _buildContent7(),
                   ],
                 ),
               ),
@@ -178,7 +174,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 children: [
                   Flexible(
                     child: PdfView(
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: Axis.vertical,
                       pageSnapping: false,
                       backgroundDecoration: const BoxDecoration(
                         color: Colors.transparent,
@@ -230,7 +226,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Text(
-                  'Lệnh bài bát tự MANH PHÁI',
+                  'Lệnh bài bát tự',
                   style: boldRedStyle?.copyWith(fontSize: 14), // Larger title
                 ),
                 pw.SizedBox(height: 8),
@@ -274,7 +270,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       pw.TextSpan(text: 'Âm Lịch: ', style: headerTextStyle),
                       pw.TextSpan(
                         text:
-                            '${lunarDate?.getDay()}/${lunarDate?.getMonth()}/${lunarDate?.getYear()}', // More detailed Lunar date
+                            'Ngày ${lunarDate?.getDay()} Tháng ${lunarDate?.getMonth()} Năm ${lunarDate?.getYearGan()} ${lunarDate?.getYearZhi()}', // More detailed Lunar date
                         style: boldRedStyle,
                       ),
                     ],
@@ -675,7 +671,11 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     bg: PdfColors.yellow,
                   ),
                   // Combined Tuổi Header
-                  tb(value: '', isBold: true, bg: PdfColors.yellow),
+                  tb(
+                    value: DateTime.now().year.toString(),
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                  ),
                 ],
               ),
 
@@ -683,7 +683,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
               pw.TableRow(
                 children: [
                   tb(value: AppUtil(solarDateTime: dateDaVan).getThapThanGio()),
-                  tb(value: ''),
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: DateTime.now()).getThapThanGio(),
+                  ),
                 ],
               ),
               // Row 4: Thiên Can (Heavenly Stems)
@@ -701,10 +704,14 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     isBold: true,
                   ),
                   tb(
-                    value: '',
+                    value:
+                        AppUtil(solarDateTime: DateTime.now()).getThienCanGio(),
 
                     isBold: true,
-                    titleColor: PdfColors.blue, // Highlight Day Master
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: DateTime.now(),
+                        ).getThienCanGio().toColor(), // Highlight Day Master
                   ),
                 ],
               ),
@@ -722,7 +729,15 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                         ).getDiaChiGio().toColor(),
                     isBold: true,
                   ),
-                  tb(value: '', isBold: true), // Corrected to getDiaChiNgay
+                  tb(
+                    value:
+                        AppUtil(solarDateTime: DateTime.now()).getDiaChiGio(),
+                    titleColor:
+                        AppUtil(
+                          solarDateTime: DateTime.now(),
+                        ).getDiaChiGio().toColor(),
+                    isBold: true,
+                  ), // Corrected to getDiaChiNgay
                 ],
               ),
               // Row 6: Tàng Can (Hidden Stems)
@@ -760,7 +775,37 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               .toList(),
                     ),
                   ),
-                  tb(value: ''),
+                  pw.Container(
+                    // Use Container to manage the Row within the cell
+                    height: 24, // Match default tb height if needed
+                    padding: pw.EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 4,
+                    ), // Match tb padding
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      // Add border to match tb
+                      border: pw.Border.all(
+                        color: PdfColors.grey600,
+                        width: 0.5,
+                      ),
+                      color: PdfColors.white,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children:
+                          AppUtil(solarDateTime: DateTime.now())
+                              .getTangCanNam()
+                              .map(
+                                (e) => pw.Text(
+                                  e,
+                                  style: baseTextStyle,
+                                  textAlign: pw.TextAlign.center,
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
                 ],
               ),
 
@@ -782,7 +827,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     value: AppUtil(solarDateTime: dateDaVan).getNapAmGio(),
                     bg: PdfColors.grey200,
                   ),
-                  tb(value: '', bg: PdfColors.grey200),
+                  tb(
+                    value: AppUtil(solarDateTime: DateTime.now()).getNapAmGio(),
+                    bg: PdfColors.grey200,
+                  ),
                 ],
               ),
             ],
@@ -895,12 +943,12 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     bool? isBold,
   }) {
     // Ensure baseTextStyle is initialized
-    final effectiveTextStyle = (baseTextStyle ?? pw.TextStyle(fontSize: 8))
+    final effectiveTextStyle = (baseTextStyle ?? pw.TextStyle(fontSize: 9))
         .copyWith(
           color: titleColor ?? PdfColors.black,
           fontWeight:
               (isBold ?? false) ? pw.FontWeight.bold : pw.FontWeight.normal,
-          fontSize: size ?? 8, // Use provided size or default
+          fontSize: size ?? 9, // Use provided size or default
         );
 
     return pw.Container(
@@ -928,7 +976,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
-  //MARK: build content 2
+  //MARK: build table Dai van
   _buildContent2(ttf) {
     var yearStart = AppUtil(solarDateTime: solarDate!).getTuoiKhoiVan(
       year: widget.model.year ?? 2025,
@@ -964,8 +1012,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           value: 'Năm ${yearStart + index * 10}',
                           isBold: true,
                           bg:
-                              PdfColors
-                                  .grey200, // Light grey background for header
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors
+                                      .grey200, // Light grey background for header
                         ),
                       ),
                     ),
@@ -973,6 +1023,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -989,6 +1043,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1012,6 +1070,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1048,7 +1110,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               color: PdfColors.grey600,
                               width: 0.5,
                             ),
-                            color: PdfColors.white,
+                            color:
+                                (yearStart + index * 10) == DateTime.now().year
+                                    ? PdfColors.yellow100
+                                    : PdfColors.white,
                           ),
                           child: pw.Row(
                             mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
@@ -1076,19 +1141,35 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          value: '',
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                        ), // Example data
                       ),
                     ),
                     pw.TableRow(
                       children: List.generate(
                         8,
                         (index) => tb(
+                          value: '',
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1104,7 +1185,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
-                          bg: PdfColors.grey200,
+                          bg:
+                              (yearStart + index * 10) == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.grey200,
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1193,7 +1277,9 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
+  //MARK: table Lưu Niên
   _buildContent3(pw.Font ttf) {
+    final yearStart = DateTime.now().year - 4;
     return pw.Column(
       children: [
         tb(value: 'Lưu Niên', isBold: true, bg: PdfColors.yellow, height: 24),
@@ -1203,7 +1289,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Expanded(
-                flex: 11,
+                flex: 8,
                 child: pw.Table(
                   // columnWidths: columnWidths8, // Apply equal widths
                   border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
@@ -1212,7 +1298,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
-                          value: 'Năm ${2020 + index * 10}',
+                          value: 'Năm ${yearStart + index}',
                           isBold: true,
                           bg:
                               PdfColors
@@ -1223,52 +1309,182 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThapThanNam(),
+                        ), // Example data
                       ),
                     ),
 
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThienCanNam(),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getThienCanNam().toColor(),
+                        ), // Example data
                       ),
                     ),
                     pw.TableRow(
                       children: List.generate(
                         8,
                         (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getDiaChiNam(),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getDiaChiNam().toColor(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => pw.Container(
+                          // Use Container to manage the Row within the cell
+                          height: 24, // Match default tb height if needed
+                          padding: pw.EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 4,
+                          ), // Match tb padding
+                          alignment: pw.Alignment.center,
+                          decoration: pw.BoxDecoration(
+                            // Add border to match tb
+                            border: pw.Border.all(
+                              color: PdfColors.grey600,
+                              width: 0.5,
+                            ),
+                            color:
+                                yearStart + index == DateTime.now().year
+                                    ? PdfColors.yellow100
+                                    : PdfColors.white,
+                          ),
+                          child: pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                            children:
+                                AppUtil(
+                                      solarDateTime: DateTime(
+                                        yearStart + index * 10,
+                                        1,
+                                        1,
+                                      ),
+                                    )
+                                    .getTangCanNam()
+                                    .map(
+                                      (e) => pw.Text(
+                                        e,
+                                        style: baseTextStyle,
+                                        textAlign: pw.TextAlign.center,
+                                      ),
+                                    )
+                                    .toList(),
+                          ),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value: '',
-                          bg: PdfColors.grey200,
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value: '',
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getTruongSinhNam(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              yearStart + index == DateTime.now().year
+                                  ? PdfColors.yellow100
+                                  : PdfColors.grey200,
+
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  yearStart + index * 10,
+                                  1,
+                                  1,
+                                ),
+                              ).getNapAmNam(),
                         ), // Example data
                       ),
                     ),
@@ -1349,17 +1565,25 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
+  //MARK: build table Luu Nguyet
   _buildContent4(pw.Font ttf) {
+    final yearStart = DateTime.now().year - 4;
+    final date = DateTime.now();
     return pw.Column(
       children: [
-        tb(value: 'Lưu Nguyệt', isBold: true, bg: PdfColors.yellow, height: 24),
+        tb(
+          value: 'Lưu Nguyệt(${date.year})',
+          isBold: true,
+          bg: PdfColors.yellow,
+          height: 24,
+        ),
         pw.SizedBox(
           height: 240,
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Expanded(
-                flex: 11,
+                flex: 8,
                 child: pw.Table(
                   // columnWidths: columnWidths8, // Apply equal widths
                   border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
@@ -1368,7 +1592,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                       children: List.generate(
                         8,
                         (index) => tb(
-                          value: 'Năm ${2020 + index * 10}',
+                          value: 'Tháng ${index + 1}',
                           isBold: true,
                           bg:
                               PdfColors
@@ -1379,52 +1603,177 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          bg:
+                              index + 1 == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  index + 1,
+                                  1,
+                                ),
+                              ).getThapThanThang(),
+                        ), // Example data
                       ),
                     ),
 
                     pw.TableRow(
                       children: List.generate(
                         8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(value: ''), // Example data
+                        (index) => tb(
+                          bg:
+                              index + 1 == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value: AppUtil(
+                            solarDateTime: DateTime(date.year, index + 1, 1),
+                          ).getThienCanThang(thang: index + 1),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  index + 1,
+                                  1,
+                                ),
+                              ).getThienCanThang(thang: index + 1).toColor(),
+                        ), // Example data
                       ),
                     ),
                     pw.TableRow(
                       children: List.generate(
                         8,
                         (index) => tb(
+                          bg:
+                              1 + index == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  1 + index,
+                                  1,
+                                ),
+                              ).getDiaChiThang(),
+                          titleColor:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  1 + index,
+                                  1,
+                                ),
+                              ).getDiaChiThang().toColor(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => pw.Container(
+                          // Use Container to manage the Row within the cell
+                          height: 24, // Match default tb height if needed
+                          padding: pw.EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 4,
+                          ), // Match tb padding
+                          alignment: pw.Alignment.center,
+                          decoration: pw.BoxDecoration(
+                            // Add border to match tb
+                            border: pw.Border.all(
+                              color: PdfColors.grey600,
+                              width: 0.5,
+                            ),
+                            color:
+                                1 + index == (widget.model.month ?? -1)
+                                    ? PdfColors.yellow100
+                                    : PdfColors.white,
+                          ),
+                          child: pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                            children:
+                                AppUtil(
+                                      solarDateTime: DateTime(
+                                        date.year,
+                                        1 + index,
+                                        1,
+                                      ),
+                                    )
+                                    .getTangCanThang()
+                                    .map(
+                                      (e) => pw.Text(
+                                        e,
+                                        style: baseTextStyle,
+                                        textAlign: pw.TextAlign.center,
+                                      ),
+                                    )
+                                    .toList(),
+                          ),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              1 + index == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
                           value: '',
-                          bg: PdfColors.grey200,
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              1 + index == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value: '',
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              1 + index == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.white,
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  1 + index,
+                                  1,
+                                ),
+                              ).getTruongSinhThang(),
+                        ), // Example data
+                      ),
+                    ),
+                    pw.TableRow(
+                      children: List.generate(
+                        8,
+                        (index) => tb(
+                          bg:
+                              1 + index == (widget.model.month ?? -1)
+                                  ? PdfColors.yellow100
+                                  : PdfColors.grey200,
+
+                          value:
+                              AppUtil(
+                                solarDateTime: DateTime(
+                                  date.year,
+                                  1 + index,
+                                  1,
+                                ),
+                              ).getNapAmNam(),
                         ), // Example data
                       ),
                     ),
