@@ -90,7 +90,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a3,
-        margin: pw.EdgeInsets.all(16),
+        margin: pw.EdgeInsets.all(8),
         build:
             (context) => [
               pw.Container(
@@ -138,8 +138,6 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    // pw.SizedBox(height: 4),
-                    // _buildContent4(ttf),
                     pw.SizedBox(height: 4),
                     _buildContent5(ttf),
                     pw.SizedBox(height: 4),
@@ -1287,9 +1285,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
           height: 240,
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.Expanded(
-                flex: 8,
+                flex: 11,
                 child: pw.Table(
                   // columnWidths: columnWidths8, // Apply equal widths
                   border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
@@ -1567,7 +1566,6 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
   //MARK: build table Luu Nguyet
   _buildContent4(pw.Font ttf) {
-    final yearStart = DateTime.now().year - 4;
     final date = DateTime.now();
     return pw.Column(
       children: [
@@ -1583,7 +1581,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Expanded(
-                flex: 8,
+                flex: 11,
                 child: pw.Table(
                   // columnWidths: columnWidths8, // Apply equal widths
                   border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
@@ -1781,71 +1779,82 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 ),
               ),
 
-              pw.Table(
-                border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
-                children: [
-                  pw.TableRow(
-                    children: [
-                      tb(value: '', isBold: true, bg: PdfColors.grey300),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(
-                        value: 'Xuất Can',
-                        isBold: true,
-                        bg: PdfColors.grey300,
-                      ),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(
-                        value: 'Thiên Can',
-                        isBold: true,
-                        bg: PdfColors.grey300,
-                      ),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(
-                        value: 'Tàng Can',
-                        isBold: true,
-                        bg: PdfColors.grey300,
-                      ),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(
-                        value: 'Thần sát\n đặt biệt',
-                        isBold: true,
-                        bg: PdfColors.grey300,
-                        height: 48,
-                      ),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(
-                        value: 'Trường Sinh',
-                        isBold: true,
-                        bg: PdfColors.grey300,
-                      ),
-                    ],
-                  ),
-                  pw.TableRow(
-                    children: [
-                      tb(value: 'Nạp Âm', isBold: true, bg: PdfColors.grey300),
-                    ],
-                  ),
-                ],
+              pw.Expanded(
+                flex: 1,
+                child: pw.Table(
+                  border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
+                  children: [
+                    pw.TableRow(
+                      children: [
+                        tb(value: '', isBold: true, bg: PdfColors.grey300),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Xuất Can',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Thiên Can',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Địa Chi',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Tàng Can',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Thần sát\n đặt biệt',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                          height: 48,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Trường Sinh',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                    pw.TableRow(
+                      children: [
+                        tb(
+                          value: 'Nạp Âm',
+                          isBold: true,
+                          bg: PdfColors.grey300,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
