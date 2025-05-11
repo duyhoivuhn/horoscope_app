@@ -1941,7 +1941,13 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
+  //MARK: build table tai cung
   _buildContent5(pw.Font ttf) {
+    final thaicung = AppUtil(solarDateTime: solarDate!).getThaiCung();
+    final menhcung = AppUtil(solarDateTime: solarDate!).getMenhCung();
+    final thaituc = AppUtil(solarDateTime: solarDate!).getThaiTuc();
+    final truphuc = AppUtil(solarDateTime: solarDate!).getTruPhuc();
+
     return pw.SizedBox(
       height: 200,
       child: pw.Row(
@@ -1966,18 +1972,18 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                     pw.TableRow(
                       children: [
-                        tb(value: ''),
-                        tb(value: ''),
-                        tb(value: ''),
-                        tb(value: ''),
+                        tb(value: thaicung.first),
+                        tb(value: menhcung.first),
+                        tb(value: thaituc.first),
+                        tb(value: truphuc.first),
                       ], // Example data
                     ),
                     pw.TableRow(
                       children: [
-                        tb(value: ''),
-                        tb(value: ''),
-                        tb(value: ''),
-                        tb(value: ''),
+                        tb(value: thaicung.last),
+                        tb(value: menhcung.last),
+                        tb(value: thaituc.last),
+                        tb(value: truphuc.last),
                       ], // Example data
                     ),
                   ],

@@ -435,47 +435,49 @@ class AppUtil {
     }
   }
 
-  // String getThaiCung() {
-  //   final _solar = Solar.fromDate(solarDateTime);
-  //   Solar? start = null; // Khởi tạo thời điểm bắt đầu khoảng Tiết Khí
-  //   Solar end; // Thời điểm kết thúc khoảng Tiết Khí (là Tiết tiếp theo)
-  //   String time =
-  //       _solar.toYmdHms(); // Thời gian hiện tại dạng YYYY-MM-DD HH:MM:SS
-  //   int size = JIE_QI_IN_USE.length; // Số lượng Tiết + Khí
-  //   Lunar lunarDate = Lunar.fromDate(solarDateTime);
-  //   // Lấy chỉ số Can và Chi của tháng (tính theo Tiết Khí)
-  //   int monthGanIndex = lunarDate.getMonthGanIndex();
-  //   // Xác định index của khoảng Tiết Khí hiện tại
-  //   int index = -3; // Bắt đầu từ -3 (trước Đại Tuyết)
-  //   for (int i = 0; i < size; i += 2) {
-  //     // Lặp qua các Tiết (bỏ qua các Khí)
-  //     end =
-  //         _jieQi[JIE_QI_IN_USE[i]]!; // Lấy thời điểm của Tiết hiện tại trong vòng lặp
-  //     // Lấy thời điểm bắt đầu của khoảng (là Tiết trước đó, hoặc thời gian hiện tại nếu là lần lặp đầu)
-  //     String stime = null == start ? time : start!.toYmdHms();
-  //     // Kiểm tra xem 'time' có nằm trong khoảng [stime, end) không
-  //     if (time.compareTo(stime) >= 0 && time.compareTo(end.toYmdHms()) < 0) {
-  //       break; // Tìm thấy khoảng, thoát vòng lặp
-  //     }
-  //     start = end; // Cập nhật thời điểm bắt đầu cho khoảng tiếp theo
-  //     index++; // Tăng index lên
-  //   }
+  List<String> getThaiCung() {
+    Lunar lunarDate = Lunar.fromDate(solarDateTime);
+    final index = lunarDate.getMonthZhiIndex();
+    final diachi = LunarUtil.ZHI[(index + 3) % 12];
 
-  //   // Tính Can tháng chính xác (không liên quan trực tiếp đến getMonthZhiIndexExact)
-  //   int offset =
-  //       (((_yearGanIndexExact + (index < 0 ? 1 : 0)) % 5 + 1) * 2) % 10;
-  //   _monthGanIndexExact = ((index < 0 ? index + 10 : index) + offset) % 10;
-  //   // Tính Can Thái Cung: Tiến 1 Can
-  //   int thaiCungGanIndex = (monthGanIndex + 1) % 10;
-  //   // Tính Chi Thái Cung: Tiến 3 Chi
-  //   int thaiCungZhiIndex = (monthZhiIndex + 3) % 12;
+    final index2 = lunarDate.getMonthGanIndex();
+    final thiencan = LunarUtil.GAN[(index2 + 3) % 10];
+    return [diachi, thiencan];
+  }
 
-  //   // Lấy tên Can Chi từ chỉ số (Lưu ý: LunarUtil.GAN/ZHI là 1-based)
-  //   String thaiCungCan = LunarUtil.GAN[thaiCungGanIndex + 1];
-  //   String thaiCungChi = LunarUtil.ZHI[thaiCungZhiIndex + 1];
+  List<String> getMenhCung() {
+    Lunar lunarDate = Lunar.fromDate(solarDateTime);
+    final indexMonth = lunarDate.getMonthZhiIndex();
+    final indexHour = lunarDate.getTimeZhiIndex();
+    final chiMenhCungIndex = (14 - indexMonth + indexHour) % 12;
 
-  //   return '$thaiCungCan$thaiCungChi';
-  // }
+    final diachi = LunarUtil.ZHI[chiMenhCungIndex];
+    final index2 = lunarDate.getMonthGanIndex();
+    final thiencan = LunarUtil.GAN[(index2 + chiMenhCungIndex) % 10];
+    return [diachi, thiencan];
+  }
+
+  List<String> getThaiTuc() {
+    Lunar lunarDate = Lunar.fromDate(solarDateTime);
+    final indexDay = lunarDate.getDayZhiIndex();
+    final indexHour = lunarDate.getTimeZhiIndex();
+    final chiMenhCungIndex = (14 - indexDay + indexHour) % 12;
+    final diachi = LunarUtil.ZHI[chiMenhCungIndex];
+    final index2 = lunarDate.getDayGanIndex();
+    final thiencan = LunarUtil.GAN[(index2 + chiMenhCungIndex) % 10];
+    return [diachi, thiencan];
+  }
+
+  List<String> getTruPhuc() {
+    Lunar lunarDate = Lunar.fromDate(solarDateTime);
+    final indexMonth = lunarDate.getMonthZhiIndex();
+    final indexYear = lunarDate.getYearZhiIndex();
+    final chiMenhCungIndex = (14 - indexYear + indexMonth) % 12;
+    final diachi = LunarUtil.ZHI[chiMenhCungIndex];
+    final index2 = lunarDate.getYearGanIndex();
+    final thiencan = LunarUtil.GAN[(index2 + chiMenhCungIndex) % 10];
+    return [diachi, thiencan];
+  }
 }
 
 class DaiVanResult {
