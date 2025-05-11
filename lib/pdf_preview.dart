@@ -2181,7 +2181,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     );
   }
 
+  //MARK: build table than sat
   _buildTableThanSat() {
+    Map<String, List<String>> thanSat =
+        AppUtil(solarDateTime: solarDate!).getThanSat();
     return pw.SizedBox(
       height: 144,
       child: pw.Column(
@@ -2221,10 +2224,23 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 ),
                 pw.TableRow(
                   children: [
-                    pw.SizedBox(width: 60, child: tb(value: '')),
-                    pw.SizedBox(width: 60, child: tb(value: '')),
-                    pw.SizedBox(width: 60, child: tb(value: '')),
-                    pw.SizedBox(width: 60, child: tb(value: '')),
+                    pw.SizedBox(
+                      width: 60,
+
+                      child: tb(value: thanSat['gio'].toString()),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: thanSat['ngay'].toString()),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: thanSat['thang'].toString()),
+                    ),
+                    pw.SizedBox(
+                      width: 60,
+                      child: tb(value: thanSat['nam'].toString()),
+                    ),
                   ], // Example data
                 ),
               ],
