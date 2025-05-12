@@ -108,11 +108,11 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.SizedBox(height: 8),
                     _buildContent1(ttf), // Pass font
 
-                    pw.SizedBox(height: 4),
+                    pw.SizedBox(height: 0),
                     _buildContent2(ttf),
-                    pw.SizedBox(height: 4),
+                    pw.SizedBox(height: 0),
                     _buildContent3(ttf),
-                    pw.SizedBox(height: 4),
+                    pw.SizedBox(height: 0),
                     _buildContent4(ttf),
                   ],
                 ),
@@ -1588,19 +1588,20 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                   children: [
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
                           value: 'Tháng ${index + 1}',
                           isBold: true,
                           bg:
                               PdfColors
                                   .grey200, // Light grey background for header
+                          size: 7,
                         ),
                       ),
                     ),
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
                           bg:
                               index + 1 == (widget.model.month ?? -1)
@@ -1614,13 +1615,14 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getThapThanThang(),
+                          size: 6,
                         ), // Example data
                       ),
                     ),
 
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
                           bg:
                               index + 1 == (widget.model.month ?? -1)
@@ -1642,7 +1644,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
                           bg:
                               1 + index == (widget.model.month ?? -1)
@@ -1669,10 +1671,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => pw.Container(
                           // Use Container to manage the Row within the cell
-                          height: 24, // Match default tb height if needed
+                          height: 40, // Match default tb height if needed
                           padding: pw.EdgeInsets.symmetric(
                             horizontal: 2,
                             vertical: 4,
@@ -1689,8 +1691,9 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                     ? PdfColors.yellow100
                                     : PdfColors.white,
                           ),
-                          child: pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                          child: pw.Wrap(
+                            // mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: pw.WrapCrossAlignment.center,
                             children:
                                 AppUtil(
                                       solarDateTime: DateTime(
@@ -1701,10 +1704,19 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                     )
                                     .getTangCanThang()
                                     .map(
-                                      (e) => pw.Text(
-                                        e,
-                                        style: baseTextStyle,
-                                        textAlign: pw.TextAlign.center,
+                                      (e) => pw.Padding(
+                                        padding: pw.EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: pw.Text(
+                                          e,
+                                          style: pw.TextStyle(
+                                            fontSize: 7,
+                                            font: ttf,
+                                            fontWeight: pw.FontWeight.bold,
+                                          ),
+                                          textAlign: pw.TextAlign.center,
+                                        ),
                                       ),
                                     )
                                     .toList(),
@@ -1714,7 +1726,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
                           bg:
                               1 + index == (widget.model.month ?? -1)
@@ -1724,22 +1736,12 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                         ), // Example data
                       ),
                     ),
+
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
-                          bg:
-                              1 + index == (widget.model.month ?? -1)
-                                  ? PdfColors.yellow100
-                                  : PdfColors.white,
-                          value: '',
-                        ), // Example data
-                      ),
-                    ),
-                    pw.TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(
+                          height: 30,
                           bg:
                               1 + index == (widget.model.month ?? -1)
                                   ? PdfColors.yellow100
@@ -1757,8 +1759,9 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                     pw.TableRow(
                       children: List.generate(
-                        8,
+                        12,
                         (index) => tb(
+                          height: 40,
                           bg:
                               1 + index == (widget.model.month ?? -1)
                                   ? PdfColors.yellow100
@@ -1822,16 +1825,18 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           value: 'Tàng Can',
                           isBold: true,
                           bg: PdfColors.grey300,
+                          height: 40,
                         ),
                       ],
                     ),
                     pw.TableRow(
                       children: [
                         tb(
-                          value: 'Thần sát\n đặt biệt',
+                          value: 'Thần sát đặt biệt',
                           isBold: true,
                           bg: PdfColors.grey300,
-                          height: 48,
+                          // height: 2,
+                          size: 6,
                         ),
                       ],
                     ),
@@ -1841,6 +1846,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           value: 'Trường Sinh',
                           isBold: true,
                           bg: PdfColors.grey300,
+                          height: 30,
                         ),
                       ],
                     ),
@@ -1850,6 +1856,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           value: 'Nạp Âm',
                           isBold: true,
                           bg: PdfColors.grey300,
+                          height: 40,
                         ),
                       ],
                     ),
@@ -2222,27 +2229,32 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     ),
                   ], // Example data
                 ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(
-                      width: 60,
-
-                      child: tb(value: thanSat['gio'].toString()),
-                    ),
-                    pw.SizedBox(
-                      width: 60,
-                      child: tb(value: thanSat['ngay'].toString()),
-                    ),
-                    pw.SizedBox(
-                      width: 60,
-                      child: tb(value: thanSat['thang'].toString()),
-                    ),
-                    pw.SizedBox(
-                      width: 60,
-                      child: tb(value: thanSat['nam'].toString()),
-                    ),
-                  ], // Example data
-                ),
+                ...List.generate(6, (index) {
+                  final gio =
+                      (thanSat['gio']?.length ?? -1) > index
+                          ? (thanSat['gio']?[index] ?? '')
+                          : '';
+                  final ngay =
+                      (thanSat['ngay']?.length ?? -1) > index
+                          ? (thanSat['ngay']?[index] ?? '')
+                          : '';
+                  final thang =
+                      (thanSat['thang']?.length ?? -1) > index
+                          ? (thanSat['thang']?[index] ?? '')
+                          : '';
+                  final nam =
+                      (thanSat['nam']?.length ?? -1) > index
+                          ? (thanSat['nam']?[index] ?? '')
+                          : '';
+                  return pw.TableRow(
+                    children: [
+                      pw.SizedBox(width: 60, child: tb(value: gio, size: 7)),
+                      pw.SizedBox(width: 60, child: tb(value: ngay, size: 7)),
+                      pw.SizedBox(width: 60, child: tb(value: thang, size: 7)),
+                      pw.SizedBox(width: 60, child: tb(value: nam, size: 7)),
+                    ], // Example data
+                  );
+                }),
               ],
             ),
           ),
