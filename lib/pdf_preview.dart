@@ -38,6 +38,11 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
   DateTime? _date; //Ngày Âm Lịch
 
+  static const double inch = 72.0;
+  static const double cm = inch / 2.54;
+
+  final a2 = PdfPageFormat(29.7 * cm, 55 * cm, marginAll: 2.0 * cm);
+
   @override
   void initState() {
     super.initState();
@@ -89,7 +94,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     ); // Reduced font size slightly
     pdf.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a3,
+        pageFormat: a2,
         margin: pw.EdgeInsets.all(8),
         build:
             (context) => [
@@ -108,36 +113,12 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                     pw.SizedBox(height: 8),
                     _buildContent1(ttf), // Pass font
 
-                    pw.SizedBox(height: 0),
+                    pw.SizedBox(height: 4),
                     _buildContent2(ttf),
-                    pw.SizedBox(height: 0),
+                    pw.SizedBox(height: 4),
                     _buildContent3(ttf),
-                    pw.SizedBox(height: 0),
+                    pw.SizedBox(height: 4),
                     _buildContent4(ttf),
-                  ],
-                ),
-              ),
-            ],
-      ),
-    );
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a3,
-        margin: pw.EdgeInsets.all(16),
-        build:
-            (context) => [
-              pw.Container(
-                padding: const pw.EdgeInsets.all(8),
-                decoration: pw.BoxDecoration(
-                  borderRadius: pw.BorderRadius.circular(2),
-                  border: pw.Border.all(
-                    color: PdfColors.grey,
-                  ), // Changed border color
-                ),
-                child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
                     pw.SizedBox(height: 4),
                     _buildContent5(ttf),
                     pw.SizedBox(height: 4),
@@ -148,6 +129,34 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
             ],
       ),
     );
+
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //     pageFormat: a2,
+    //     margin: pw.EdgeInsets.all(8),
+    //     build:
+    //         (context) => [
+    //           pw.Container(
+    //             padding: const pw.EdgeInsets.all(8),
+    //             decoration: pw.BoxDecoration(
+    //               borderRadius: pw.BorderRadius.circular(2),
+    //               border: pw.Border.all(
+    //                 color: PdfColors.grey,
+    //               ), // Changed border color
+    //             ),
+    //             child: pw.Column(
+    //               crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //               children: [
+    //                 pw.SizedBox(height: 4),
+    //                 _buildContent5(ttf),
+    //                 pw.SizedBox(height: 4),
+    //                 _buildContent7(),
+    //               ],
+    //             ),
+    //           ),
+    //         ],
+    //   ),
+    // );
 
     final output = await getTemporaryDirectory();
     final file = File('${output.path}/lenh_bai_bat_tu_v2.pdf');
@@ -314,10 +323,30 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                   color: PdfColors.blueGrey50,
                 ), // Header color
                 children: [
-                  tb(value: 'Giờ', isBold: true, bg: PdfColors.yellow),
-                  tb(value: 'Ngày', isBold: true, bg: PdfColors.yellow),
-                  tb(value: 'Tháng', isBold: true, bg: PdfColors.yellow),
-                  tb(value: 'Năm', isBold: true, bg: PdfColors.yellow),
+                  tb(
+                    value: 'Giờ',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
+                  tb(
+                    value: 'Ngày',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
+                  tb(
+                    value: 'Tháng',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
+                  tb(
+                    value: 'Năm',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
                 ],
               ),
               // Header Row 2: Solar Date/Time
@@ -381,6 +410,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getThienCanGio().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getThienCanNgay(),
@@ -389,6 +420,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                         AppUtil(
                           solarDateTime: solarDate!,
                         ).getThienCanNgay().toColor(), // Highlight Day Master
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value: ThienCan.getThienCanThang(
@@ -401,6 +434,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           month: widget.model.month ?? 1,
                         ).toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getThienCanNam(),
@@ -409,6 +444,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getThienCanNam().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                 ],
               ),
@@ -425,6 +462,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getDiaChiGio().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getDiaChiNgay(),
@@ -433,6 +472,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getDiaChiNgay().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ), // Corrected to getDiaChiNgay
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getDiaChiThang(),
@@ -441,6 +482,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getDiaChiThang().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getDiaChiNam(),
@@ -449,6 +492,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: solarDate!,
                         ).getDiaChiNam().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                 ],
               ),
@@ -479,7 +524,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               .map(
                                 (e) => pw.Text(
                                   e,
-                                  style: baseTextStyle,
+                                  style: baseTextStyle?.copyWith(
+                                    color: e.toColor(),
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
                                   textAlign: pw.TextAlign.center,
                                 ),
                               )
@@ -510,7 +558,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               .map(
                                 (e) => pw.Text(
                                   e,
-                                  style: baseTextStyle,
+                                  style: baseTextStyle?.copyWith(
+                                    color: e.toColor(),
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
                                   textAlign: pw.TextAlign.center,
                                 ),
                               )
@@ -541,7 +592,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               .map(
                                 (e) => pw.Text(
                                   e,
-                                  style: baseTextStyle,
+                                  style: baseTextStyle?.copyWith(
+                                    color: e.toColor(),
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
                                   textAlign: pw.TextAlign.center,
                                 ),
                               )
@@ -572,7 +626,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                               .map(
                                 (e) => pw.Text(
                                   e,
-                                  style: baseTextStyle,
+                                  style: baseTextStyle?.copyWith(
+                                    color: e.toColor(),
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
                                   textAlign: pw.TextAlign.center,
                                 ),
                               )
@@ -654,9 +711,19 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                 decoration: pw.BoxDecoration(color: PdfColors.blueGrey50),
                 children: [
                   // Combined Đại Vận Header
-                  tb(value: 'Đại Vận', isBold: true, bg: PdfColors.yellow),
+                  tb(
+                    value: 'Đại Vận',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
                   // Combined Tuổi Header
-                  tb(value: 'Lưu Niên', isBold: true, bg: PdfColors.yellow),
+                  tb(
+                    value: 'Lưu Niên',
+                    isBold: true,
+                    bg: PdfColors.yellow,
+                    size: 12,
+                  ),
                 ],
               ),
               pw.TableRow(
@@ -700,6 +767,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: dateDaVan,
                         ).getThienCanGio().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value:
@@ -710,6 +779,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                         AppUtil(
                           solarDateTime: DateTime.now(),
                         ).getThienCanGio().toColor(), // Highlight Day Master
+                    size: 16,
+                    height: 30,
                   ),
                 ],
               ),
@@ -726,6 +797,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: dateDaVan,
                         ).getDiaChiGio().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ),
                   tb(
                     value:
@@ -735,6 +808,8 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           solarDateTime: DateTime.now(),
                         ).getDiaChiGio().toColor(),
                     isBold: true,
+                    size: 16,
+                    height: 30,
                   ), // Corrected to getDiaChiNgay
                 ],
               ),
@@ -857,12 +932,22 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
               ),
               pw.TableRow(
                 children: [
-                  tb(value: 'Thiên Can', isBold: true, bg: PdfColors.grey300),
+                  tb(
+                    value: 'Thiên Can',
+                    isBold: true,
+                    bg: PdfColors.grey300,
+                    height: 30,
+                  ),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  tb(value: 'Địa Chi', isBold: true, bg: PdfColors.grey300),
+                  tb(
+                    value: 'Địa Chi',
+                    isBold: true,
+                    bg: PdfColors.grey300,
+                    height: 30,
+                  ),
                 ],
               ),
               pw.TableRow(
@@ -946,6 +1031,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
           color: titleColor ?? PdfColors.black,
           fontWeight:
               (isBold ?? false) ? pw.FontWeight.bold : pw.FontWeight.normal,
+
           fontSize: size ?? 9, // Use provided size or default
         );
 
@@ -991,9 +1077,15 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
 
     return pw.Column(
       children: [
-        tb(value: 'Đại Vận', isBold: true, bg: PdfColors.yellow, height: 24),
+        tb(
+          value: 'Đại Vận',
+          isBold: true,
+          bg: PdfColors.yellow,
+          height: 24,
+          size: 12,
+        ),
         pw.SizedBox(
-          height: 240,
+          height: 220,
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
@@ -1061,6 +1153,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getThienCanNam().toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1088,6 +1181,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getDiaChiNam().toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1127,7 +1221,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                     .map(
                                       (e) => pw.Text(
                                         e,
-                                        style: baseTextStyle,
+                                        style: baseTextStyle?.copyWith(
+                                          color: e.toColor(),
+                                          fontWeight: pw.FontWeight.bold,
+                                        ),
                                         textAlign: pw.TextAlign.center,
                                       ),
                                     )
@@ -1280,9 +1377,15 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
     final yearStart = DateTime.now().year - 4;
     return pw.Column(
       children: [
-        tb(value: 'Lưu Niên', isBold: true, bg: PdfColors.yellow, height: 24),
+        tb(
+          value: 'Lưu Niên',
+          isBold: true,
+          bg: PdfColors.yellow,
+          height: 24,
+          size: 12,
+        ),
         pw.SizedBox(
-          height: 240,
+          height: 220,
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1349,6 +1452,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getThienCanNam().toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1376,6 +1480,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getDiaChiNam().toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1415,7 +1520,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                     .map(
                                       (e) => pw.Text(
                                         e,
-                                        style: baseTextStyle,
+                                        style: baseTextStyle?.copyWith(
+                                          color: e.toColor(),
+                                          fontWeight: pw.FontWeight.bold,
+                                        ),
                                         textAlign: pw.TextAlign.center,
                                       ),
                                     )
@@ -1574,6 +1682,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
           isBold: true,
           bg: PdfColors.yellow,
           height: 24,
+          size: 12,
         ),
         pw.SizedBox(
           height: 240,
@@ -1595,7 +1704,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                           bg:
                               PdfColors
                                   .grey200, // Light grey background for header
-                          size: 7,
+                          size: 8,
                         ),
                       ),
                     ),
@@ -1615,7 +1724,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getThapThanThang(),
-                          size: 6,
+                          size: 7,
                         ), // Example data
                       ),
                     ),
@@ -1639,6 +1748,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getThienCanThang(thang: index + 1).toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1666,6 +1776,7 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                   1,
                                 ),
                               ).getDiaChiThang().toColor(),
+                          size: 12,
                         ), // Example data
                       ),
                     ),
@@ -1711,9 +1822,10 @@ class _PdfPreviewScreenState extends State<PdfPreviewScreen> {
                                         child: pw.Text(
                                           e,
                                           style: pw.TextStyle(
-                                            fontSize: 7,
+                                            fontSize: 8,
                                             font: ttf,
                                             fontWeight: pw.FontWeight.bold,
+                                            color: e.toColor(),
                                           ),
                                           textAlign: pw.TextAlign.center,
                                         ),
