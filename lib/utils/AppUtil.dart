@@ -12,6 +12,60 @@ class AppUtil {
 
   AppUtil({required this.solarDateTime});
 
+  List<String> solarTermNames = [
+    "Lập Xuân",
+    "Vũ Thủy",
+    "Kinh Trập",
+    "Xuân Phân",
+    "Thanh Minh",
+    "Cốc Vũ",
+    "Lập Hạ",
+    "Tiểu Mãn",
+    "Mang Chủng",
+    "Hạ Chí",
+    "Tiểu Thử",
+    "Đại Thử",
+    "Lập Thu",
+    "Xử Thử",
+    "Bạch Lộ",
+    "Thu Phân",
+    "Hàn Lộ",
+    "Sương Giáng",
+    "Lập Đông",
+    "Tiểu Tuyết",
+    "Đại Tuyết",
+    "Đông Chí",
+    "Tiểu Hàn",
+    "Đại Hàn",
+  ];
+
+  List<int> solarTermOffsets = [
+    315,
+    330,
+    345,
+    0,
+    15,
+    30,
+    45,
+    60,
+    75,
+    90,
+    105,
+    120,
+    135,
+    150,
+    165,
+    180,
+    195,
+    210,
+    225,
+    240,
+    255,
+    270,
+    285,
+    300,
+  ];
+
   static Map<String, List<String>> canThangTable = {
     'Giáp': [
       'Bính',
@@ -983,6 +1037,48 @@ class AppUtil {
 
     return thanSat;
   }
+
+  /// Tính tiết khí theo ngày sinh
+  String getSolarTermByDate(DateTime birthDate) {
+    int year = birthDate.year;
+    DateTime baseDate = DateTime.utc(1900, 1, 6, 2); // Mốc tính gần đúng
+
+    // Lấy toàn bộ tiết khí trong năm
+    List<SolarTerm> terms = [];
+    for (int i = 0; i < 24; i++) {
+      int days = ((year - 1900) * 365.2422).round() + solarTermOffsets[i];
+      DateTime termDate = baseDate.add(Duration(days: days));
+      terms.add(SolarTerm(solarTermNames[i], termDate));
+    }
+
+    // Xử lý Tiểu Hàn và Đại Hàn của năm tiếp theo
+    int daysNextYear = ((year + 1 - 1900) * 365.2422).round();
+    terms.add(
+      SolarTerm(
+        "Tiểu Hàn (năm sau)",
+        baseDate.add(Duration(days: daysNextYear + 285)),
+      ),
+    );
+    terms.add(
+      SolarTerm(
+        "Đại Hàn (năm sau)",
+        baseDate.add(Duration(days: daysNextYear + 300)),
+      ),
+    );
+
+    // Tìm tiết khí ứng với ngày sinh
+    for (int i = 0; i < terms.length - 1; i++) {
+      if (birthDate.isAfter(terms[i].date) &&
+          birthDate.isBefore(terms[i + 1].date)) {
+        return terms[i].name;
+      } else if (birthDate.isAtSameMomentAs(terms[i].date)) {
+        return terms[i].name;
+      }
+    }
+
+    // Nếu không khớp, có thể là Tiểu Hàn hoặc Đại Hàn đầu năm
+    return "Không xác định (có thể đầu năm thuộc Tiểu Hàn/Đại Hàn năm trước)";
+  }
 }
 
 class DaiVanResult {
@@ -1001,4 +1097,11 @@ class DaiVanResult {
   String toString() {
     return '($description)';
   }
+}
+
+class SolarTerm {
+  final String name;
+  final DateTime date;
+
+  SolarTerm(this.name, this.date);
 }
