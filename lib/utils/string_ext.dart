@@ -1,13 +1,44 @@
-import 'package:pdf/pdf.dart';
+import 'package:flutter/material.dart';
 
-final gray = PdfColorHsl.fromRgb(147 / 255, 149 / 255, 152 / 255);
-final blue = PdfColorHsl.fromRgb(96 / 255, 157 / 255, 248 / 255);
-final green = PdfColorHsl.fromRgb(125 / 255, 183 / 255, 78 / 255);
-final red = PdfColorHsl.fromRgb(230 / 255, 0 / 255, 10 / 255);
-final brow = PdfColorHsl.fromRgb(111 / 255, 78 / 255, 48 / 255);
+// final gray = Color.from(
+//   red: 147 / 255,
+//   green: 149 / 255,
+//   blue: 152 / 255,
+//   alpha: 1,
+// );
+// final blue = Color.from(
+//   red: 96 / 255,
+//   green: 157 / 255,
+//   blue: 248 / 255,
+//   alpha: 1,
+// );
+// final green = Color.from(
+//   red: 125 / 255,
+//   green: 183 / 255,
+//   blue: 78 / 255,
+//   alpha: 1,
+// );
+// final red = Color.from(
+//   red: 230 / 255,
+//   green: 0 / 255,
+//   blue: 10 / 255,
+//   alpha: 1,
+// );
+// final brow = Color.from(
+//   red: 111 / 255,
+//   green: 78 / 255,
+//   blue: 48 / 255,
+//   alpha: 1,
+// );
+
+final gray = Colors.grey;
+final blue = Colors.blue;
+final green = Colors.green;
+final red = Colors.red;
+final brow = Colors.brown;
 
 extension StringExt on String {
-  PdfColor toColor() {
+  Color toColor() {
     switch (this) {
       // --- Kim (Metal) ---
       case 'Canh':
@@ -48,7 +79,21 @@ extension StringExt on String {
 
       // --- Mặc định ---
       default:
-        return PdfColors.black;
+        return Colors.black;
     }
+  }
+
+  String get format {
+    if (this == '') {
+      return '';
+    }
+    List<String> parts = this.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty) {
+      return this;
+    }
+    String firstInitial = parts.first[0] + '.';
+    String rest = parts.skip(1).join('');
+
+    return firstInitial + rest;
   }
 }

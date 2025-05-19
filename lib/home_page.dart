@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
               context,
               PageRouteBuilder<void>(
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return PdfPreviewScreen(model: dataModel);
+                  // return PdfPreviewScreen(model: dataModel);
                   return TicketPage(
                     model: dataModel,
                   ); // Trả về trang bạn muốn đến

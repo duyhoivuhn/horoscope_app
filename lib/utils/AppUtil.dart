@@ -6,6 +6,7 @@ import 'package:horoscope_app/lunar/calendar/Solar.dart';
 import 'package:horoscope_app/lunar/calendar/eightchar/Yun.dart';
 import 'package:horoscope_app/lunar/calendar/util/LunarUtil.dart';
 import 'package:horoscope_app/thiencan.dart';
+import 'package:horoscope_app/utils/string_ext.dart';
 
 class AppUtil {
   final DateTime solarDateTime;
@@ -337,28 +338,28 @@ class AppUtil {
   String getThapThanNam() {
     final day = getThienCanNgay();
     final hour = getThienCanNam();
-    return LunarUtil.SHI_SHEN['$day$hour'] ?? '';
+    return (LunarUtil.SHI_SHEN['$day$hour'] ?? '').format;
   }
 
   String getNapAmNam() {
     final key = '${getThienCanNam()}${getDiaChiNam()}';
-    return LunarUtil.NAYIN[key] ?? '';
+    return (LunarUtil.NAYIN[key] ?? '').format;
   }
 
   String getNapAmThang() {
     final key =
         '${getThienCanThang(thang: solarDateTime.month)}${getDiaChiThang()}';
-    return LunarUtil.NAYIN[key] ?? '';
+    return (LunarUtil.NAYIN[key] ?? '').format;
   }
 
   String getNapAmNgay() {
     final key = '${getThienCanNgay()}${getDiaChiNgay()}';
-    return LunarUtil.NAYIN[key] ?? '';
+    return (LunarUtil.NAYIN[key] ?? '').format;
   }
 
   String getNapAmGio() {
     final key = '${getThienCanGio()}${getDiaChiGio()}';
-    return LunarUtil.NAYIN[key] ?? '';
+    return (LunarUtil.NAYIN[key] ?? '').format;
   }
 
   /// Trả về tuổi khởi vận dựa trên ngày sinh và tiết khí kế tiếp (hoặc trước)
