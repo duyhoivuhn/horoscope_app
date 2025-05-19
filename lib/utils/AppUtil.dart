@@ -554,174 +554,6 @@ class AppUtil {
       'gio': {'can': getThienCanGio(), 'chi': getDiaChiGio()},
     };
 
-    // Map<String, List<String>> thanSat = {
-    //   'nam': [],
-    //   'thang': [],
-    //   'ngay': [],
-    //   'gio': [],
-    // };
-
-    // // ---------------------------
-    // // 1. Thái Cực Quý Nhân
-    // const thaiCuc = {
-    //   'Giáp': ['Tý', 'Ngọ'],
-    //   'Ất': ['Sửu', 'Mùi'],
-    //   'Bính': ['Dần', 'Thân'],
-    //   'Đinh': ['Mão', 'Dậu'],
-    //   'Mậu': ['Thìn', 'Tuất'],
-    //   'Kỷ': ['Tỵ', 'Hợi'],
-    //   'Canh': ['Tý', 'Ngọ'],
-    //   'Tân': ['Sửu', 'Mùi'],
-    //   'Nhâm': ['Dần', 'Thân'],
-    //   'Quý': ['Mão', 'Dậu'],
-    // };
-
-    // // 2. Đào Hoa Tinh (theo chi của trụ)
-    // const daoHoa = {'Tý': 'Mão', 'Ngọ': 'Dậu', 'Mão': 'Tý', 'Dậu': 'Ngọ'};
-
-    // // 3. Tướng Tinh (chỉ ví dụ 1 nhóm, cần bảng đầy đủ để mở rộng)
-    // const tuongTinhChi = ['Tý', 'Ngọ', 'Mão', 'Dậu'];
-
-    // // 4. Quốc Ấn Quý Nhân (giả định theo can)
-    // const quocAn = {
-    //   'Giáp': 'Dần',
-    //   'Ất': 'Mão',
-    //   'Bính': 'Tỵ',
-    //   'Đinh': 'Ngọ',
-    //   'Mậu': 'Thân',
-    //   'Kỷ': 'Dậu',
-    //   'Canh': 'Tuất',
-    //   'Tân': 'Hợi',
-    //   'Nhâm': 'Sửu',
-    //   'Quý': 'Tý',
-    // };
-
-    // // 5. Khôi Canh
-    // const khoiCanh = {
-    //   'Giáp': 'Tý',
-    //   'Ất': 'Sửu',
-    //   'Bính': 'Dần',
-    //   'Đinh': 'Mão',
-    //   'Mậu': 'Thìn',
-    //   'Kỷ': 'Tỵ',
-    //   'Canh': 'Ngọ',
-    //   'Tân': 'Mùi',
-    //   'Nhâm': 'Thân',
-    //   'Quý': 'Dậu',
-    // };
-
-    // // 6. Văn Xương Quý Nhân
-    // const vanXuong = {
-    //   'Tý': 'Sửu',
-    //   'Sửu': 'Dần',
-    //   'Dần': 'Mão',
-    //   'Mão': 'Thìn',
-    //   'Thìn': 'Tỵ',
-    //   'Tỵ': 'Ngọ',
-    //   'Ngọ': 'Mùi',
-    //   'Mùi': 'Thân',
-    //   'Thân': 'Dậu',
-    //   'Dậu': 'Tuất',
-    //   'Tuất': 'Hợi',
-    //   'Hợi': 'Tý',
-    // };
-
-    // // 7. Long Đức Quý Nhân
-    // const longDuc = {
-    //   'Tý': 'Dậu',
-    //   'Sửu': 'Tý',
-    //   'Dần': 'Sửu',
-    //   'Mão': 'Dần',
-    //   'Thìn': 'Mão',
-    //   'Tỵ': 'Thìn',
-    //   'Ngọ': 'Tỵ',
-    //   'Mùi': 'Ngọ',
-    //   'Thân': 'Mùi',
-    //   'Dậu': 'Thân',
-    //   'Tuất': 'Dậu',
-    //   'Hợi': 'Tuất',
-    // };
-
-    // // 8. Lưu Hạ
-    // const luuHa = {
-    //   'Giáp': 'Ngọ',
-    //   'Ất': 'Tỵ',
-    //   'Bính': 'Tỵ',
-    //   'Đinh': 'Thìn',
-    //   'Mậu': 'Thìn',
-    //   'Kỷ': 'Mão',
-    //   'Canh': 'Mão',
-    //   'Tân': 'Dần',
-    //   'Nhâm': 'Dần',
-    //   'Quý': 'Sửu',
-    // };
-
-    // // 9. Hồng Loan Tinh
-    // const hongLoan = {
-    //   'Tý': 'Ngọ',
-    //   'Sửu': 'Mùi',
-    //   'Dần': 'Thân',
-    //   'Mão': 'Dậu',
-    //   'Thìn': 'Tuất',
-    //   'Tỵ': 'Hợi',
-    //   'Ngọ': 'Tý',
-    //   'Mùi': 'Sửu',
-    //   'Thân': 'Dần',
-    //   'Dậu': 'Mão',
-    //   'Tuất': 'Thìn',
-    //   'Hợi': 'Tỵ',
-    // };
-
-    // // 10. Vong Thần Tinh
-    // const vongThan = {
-    //   'Tý': 'Tỵ',
-    //   'Sửu': 'Ngọ',
-    //   'Dần': 'Mùi',
-    //   'Mão': 'Thân',
-    //   'Thìn': 'Dậu',
-    //   'Tỵ': 'Tuất',
-    //   'Ngọ': 'Hợi',
-    //   'Mùi': 'Tý',
-    //   'Thân': 'Sửu',
-    //   'Dậu': 'Dần',
-    //   'Tuất': 'Mão',
-    //   'Hợi': 'Thìn',
-    // };
-
-    // // Kiểm tra từng thần sát
-    // canChi.forEach((tru, val) {
-    //   final can = val['can']!;
-    //   final chi = val['chi']!;
-
-    //   if (thaiCuc[can]?.contains(chi) ?? false)
-    //     thanSat[tru]!.add('Thái Cực Quý Nhân');
-
-    //   if (daoHoa[canChi['nam']!['chi']!] == chi)
-    //     thanSat[tru]!.add('Đào Hoa Tinh');
-
-    //   if (tuongTinhChi.contains(chi)) thanSat[tru]!.add('Tướng Tinh');
-
-    //   if (quocAn[can] == chi) thanSat[tru]!.add('Quốc Ấn Quý Nhân');
-
-    //   if (khoiCanh[can] == chi) thanSat[tru]!.add('Khôi Canh');
-
-    //   if (vanXuong[canChi['nam']!['chi']!] == chi)
-    //     thanSat[tru]!.add('Văn Xương Quý Nhân');
-
-    //   if (longDuc[canChi['nam']!['chi']!] == chi)
-    //     thanSat[tru]!.add('Long Đức Quý Nhân');
-
-    //   if (luuHa[can] == chi) thanSat[tru]!.add('Lưu Hạ');
-
-    //   if (hongLoan[canChi['nam']!['chi']!] == chi)
-    //     thanSat[tru]!.add('Hồng Loan Tinh');
-
-    //   if (vongThan[canChi['nam']!['chi']!] == chi)
-    //     thanSat[tru]!.add('Vong Thần Tinh');
-    // });
-
-    // return thanSat;
-
     final canNgay = canChi['ngay']!['can']!;
     final canThang = canChi['thang']!['can']!;
     final canGio = canChi['gio']!['can']!;
@@ -875,23 +707,23 @@ class AppUtil {
     // Thái Cực
     thaiCuc[canNgay]?.forEach((targetChi) {
       allChi.forEach((tru, chi) {
-        if (chi == targetChi) thanSat[tru]!.add('Thái Cực Quý Nhân');
+        if (chi == targetChi) thanSat[tru]!.add('Thái Cực\nQuý Nhân');
       });
     });
     thaiCuc[canThang]?.forEach((targetChi) {
       allChi.forEach((tru, chi) {
-        if (chi == targetChi) thanSat[tru]!.add('Thái Cực Quý Nhân');
+        if (chi == targetChi) thanSat[tru]!.add('Thái Cực\nQuý Nhân');
       });
     });
 
     thaiCuc[canNam]?.forEach((targetChi) {
       allChi.forEach((tru, chi) {
-        if (chi == targetChi) thanSat[tru]!.add('Thái Cực Quý Nhân');
+        if (chi == targetChi) thanSat[tru]!.add('Thái Cực\nQuý Nhân');
       });
     });
     thaiCuc[canGio]?.forEach((targetChi) {
       allChi.forEach((tru, chi) {
-        if (chi == targetChi) thanSat[tru]!.add('Thái Cực Quý Nhân');
+        if (chi == targetChi) thanSat[tru]!.add('Thái Cực\nQuý Nhân');
       });
     });
 
@@ -899,25 +731,25 @@ class AppUtil {
     final daoHoaTarget = daoHoa[chiNam];
     if (daoHoaTarget != null) {
       allChi.forEach((tru, chi) {
-        if (chi == daoHoaTarget) thanSat[tru]!.add('Đào Hoa Tinh');
+        if (chi == daoHoaTarget) thanSat[tru]!.add('Đào Hoa\nTinh');
       });
     }
     final daoHoaTarget2 = daoHoa[chiThang];
     if (daoHoaTarget != null) {
       allChi.forEach((tru, chi) {
-        if (chi == daoHoaTarget2) thanSat[tru]!.add('Đào Hoa Tinh');
+        if (chi == daoHoaTarget2) thanSat[tru]!.add('Đào Hoa\nTinh');
       });
     }
     final daoHoaTarget3 = daoHoa[chiNgay];
     if (daoHoaTarget != null) {
       allChi.forEach((tru, chi) {
-        if (chi == daoHoaTarget3) thanSat[tru]!.add('Đào Hoa Tinh');
+        if (chi == daoHoaTarget3) thanSat[tru]!.add('Đào Hoa\nTinh');
       });
     }
     final daoHoaTarget4 = daoHoa[chiGio];
     if (daoHoaTarget != null) {
       allChi.forEach((tru, chi) {
-        if (chi == daoHoaTarget4) thanSat[tru]!.add('Đào Hoa Tinh');
+        if (chi == daoHoaTarget4) thanSat[tru]!.add('Đào Hoa\nTinh');
       });
     }
 
@@ -930,7 +762,7 @@ class AppUtil {
     final quocAnChi = quocAn[canNgay];
     if (quocAnChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == quocAnChi) thanSat[tru]!.add('Quốc Ấn Quý Nhân');
+        if (chi == quocAnChi) thanSat[tru]!.add('Quốc Ấn\nQuý Nhân');
       });
     }
 
@@ -964,25 +796,25 @@ class AppUtil {
     final vanXuongChi = vanXuong[chiNam];
     if (vanXuongChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == vanXuongChi) thanSat[tru]!.add('Văn Xương Quý Nhân');
+        if (chi == vanXuongChi) thanSat[tru]!.add('Văn Xương\nQuý Nhân');
       });
     }
     final vanXuongChi2 = vanXuong[chiThang];
     if (vanXuongChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == vanXuongChi2) thanSat[tru]!.add('Văn Xương Quý Nhân');
+        if (chi == vanXuongChi2) thanSat[tru]!.add('Văn Xương\nQuý Nhân');
       });
     }
     final vanXuongChi3 = vanXuong[chiNgay];
     if (vanXuongChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == vanXuongChi3) thanSat[tru]!.add('Văn Xương Quý Nhân');
+        if (chi == vanXuongChi3) thanSat[tru]!.add('Văn Xương\nQuý Nhân');
       });
     }
     final vanXuongChi4 = vanXuong[chiGio];
     if (vanXuongChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == vanXuongChi4) thanSat[tru]!.add('Văn Xương Quý Nhân');
+        if (chi == vanXuongChi4) thanSat[tru]!.add('Văn Xương\nQuý Nhân');
       });
     }
 
@@ -990,25 +822,25 @@ class AppUtil {
     final longDucChi = longDuc[chiNam];
     if (longDucChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == longDucChi) thanSat[tru]!.add('Long Đức Quý Nhân');
+        if (chi == longDucChi) thanSat[tru]!.add('Long Đức\nQuý Nhân');
       });
     }
     final longDucChi2 = longDuc[chiThang];
     if (longDucChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == longDucChi2) thanSat[tru]!.add('Long Đức Quý Nhân');
+        if (chi == longDucChi2) thanSat[tru]!.add('Long Đức\nQuý Nhân');
       });
     }
     final longDucChi3 = longDuc[chiNgay];
     if (longDucChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == longDucChi3) thanSat[tru]!.add('Long Đức Quý Nhân');
+        if (chi == longDucChi3) thanSat[tru]!.add('Long Đức\nQuý Nhân');
       });
     }
     final longDucChi4 = longDuc[chiGio];
     if (longDucChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == longDucChi4) thanSat[tru]!.add('Long Đức Quý Nhân');
+        if (chi == longDucChi4) thanSat[tru]!.add('Long Đức\nQuý Nhân');
       });
     }
 
@@ -1024,7 +856,7 @@ class AppUtil {
     final hongLoanChi = hongLoan[chiNam];
     if (hongLoanChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == hongLoanChi) thanSat[tru]!.add('Hồng Loan Tinh');
+        if (chi == hongLoanChi) thanSat[tru]!.add('Hồng Loan\nTinh');
       });
     }
 
@@ -1032,8 +864,12 @@ class AppUtil {
     final vongThanChi = vongThan[chiNam];
     if (vongThanChi != null) {
       allChi.forEach((tru, chi) {
-        if (chi == vongThanChi) thanSat[tru]!.add('Vong Thần Tinh');
+        if (chi == vongThanChi) thanSat[tru]!.add('Vong Thần\nTinh');
       });
+    }
+
+    if (thanSat['nam']?.isEmpty ?? true) {
+      thanSat['nam']?.add('Thái Cực\nQuý Nhân');
     }
 
     return thanSat;

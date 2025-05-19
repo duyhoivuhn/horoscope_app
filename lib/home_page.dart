@@ -185,6 +185,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           InkWell(
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               PickerUtil.selectDate(
                 context: context,
                 selectedDate: _selectedDate,
@@ -205,6 +206,7 @@ class _HomePageState extends State<HomePage> {
 
           InkWell(
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               PickerUtil.selectTime(
                 context: context,
                 initialHour: dataModel.hour,

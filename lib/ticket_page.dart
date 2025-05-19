@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:horoscope_app/data_model.dart';
+import 'package:horoscope_app/gen/assets.gen.dart';
 import 'package:horoscope_app/lunar/calendar/Lunar.dart';
 import 'package:horoscope_app/utils/AppUtil.dart';
 import 'package:horoscope_app/thiencan.dart';
@@ -29,11 +30,17 @@ class _TicketPageState extends State<TicketPage> {
   Lunar? lunarDate;
   DateTime? solarDate;
 
-  TextStyle? baseTextStyle;
+  // TextStyle? baseTextStyle;
 
   DateTime? _date; //Ngày Âm Lịch
 
   var isLoading = true;
+
+  final baseStyle = TextStyle(
+    fontFamily: Assets.fonts.uTMAvoBold,
+    fontWeight: FontWeight.w700,
+    fontSize: 8,
+  );
 
   @override
   void initState() {
@@ -74,18 +81,6 @@ class _TicketPageState extends State<TicketPage> {
 
     await Future.delayed(Duration(seconds: 1));
 
-    // final pdf = Document();
-
-    // // Load the font
-    // final fontData = await rootBundle.load(Assets.fonts.robotoMono);
-    // final ttf = Font.ttf(fontData);
-
-    // // Define base text style using the loaded font
-    baseTextStyle = TextStyle(
-      fontSize: 8,
-      fontWeight: FontWeight.bold,
-    ); // Reduced font size slightly
-
     setState(() {
       isLoading = false;
     });
@@ -96,7 +91,13 @@ class _TicketPageState extends State<TicketPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Xem Lệnh Bài Bát Tự')),
+      appBar: AppBar(
+        title: Text(
+          'Xem Lệnh Bài Bát Tự',
+          style: baseStyle.copyWith(fontSize: 18),
+        ),
+        centerTitle: false,
+      ),
       body:
           isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -142,17 +143,6 @@ class _TicketPageState extends State<TicketPage> {
   }
 
   Widget _buildHeader() {
-    // Use the passed font
-    final headerTextStyle = baseTextStyle?.copyWith();
-    final boldRedStyle = headerTextStyle?.copyWith(
-      color: Colors.red,
-      fontWeight: FontWeight.w700,
-    );
-    final boldBlackStyle = headerTextStyle?.copyWith(
-      color: Colors.black,
-      fontWeight: FontWeight.w700,
-    );
-
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -171,16 +161,31 @@ class _TicketPageState extends State<TicketPage> {
                 children: [
                   Text(
                     'Lệnh bài bát tự',
-                    style: boldRedStyle?.copyWith(fontSize: 10), // Larger title
+                    style: baseStyle.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.red,
+                    ), // Larger title
                   ),
                   SizedBox(height: 2),
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Họ và Tên: ', style: headerTextStyle),
+                        TextSpan(
+                          text: 'Họ và Tên: ',
+                          style: baseStyle.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
                         TextSpan(
                           text: widget.model.fullName ?? '',
-                          style: boldRedStyle?.copyWith(fontSize: 8),
+                          style: baseStyle.copyWith(
+                            fontSize: 12,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ],
                     ),
@@ -188,10 +193,21 @@ class _TicketPageState extends State<TicketPage> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Giới tính: ', style: headerTextStyle),
+                        TextSpan(
+                          text: 'Giới tính: ',
+                          style: baseStyle.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
                         TextSpan(
                           text: widget.model.generate ?? '',
-                          style: boldBlackStyle,
+                          style: baseStyle.copyWith(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),
@@ -199,11 +215,21 @@ class _TicketPageState extends State<TicketPage> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Dương Lịch: ', style: headerTextStyle),
+                        TextSpan(
+                          text: 'Dương Lịch: ',
+                          style: baseStyle.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
                         TextSpan(
                           text:
                               '${widget.model.day}/${widget.model.month}/${widget.model.year} (Giờ ${widget.model.hour}:${widget.model.minute})', // Added time
-                          style: boldRedStyle,
+                          style: baseStyle.copyWith(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -211,11 +237,22 @@ class _TicketPageState extends State<TicketPage> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Âm Lịch: ', style: headerTextStyle),
+                        TextSpan(
+                          text: 'Âm Lịch: ',
+                          style: baseStyle.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
                         TextSpan(
                           text:
                               'Ngày ${lunarDate?.getDay()} Tháng ${lunarDate?.getMonth()} Năm ${lunarDate?.getYearGan()} ${lunarDate?.getYearZhi()}', // More detailed Lunar date
-                          style: boldRedStyle,
+                          style: baseStyle.copyWith(
+                            color: Colors.black,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),
@@ -231,9 +268,6 @@ class _TicketPageState extends State<TicketPage> {
 
   //MARK: build content 1
   Widget _buildContent1() {
-    // Use the passed font
-    baseTextStyle = baseTextStyle?.copyWith();
-
     final yearStart = AppUtil(solarDateTime: solarDate!).getTuoiKhoiVan(
       year: widget.model.year ?? 2025,
       month: widget.model.month ?? 12,
@@ -261,10 +295,30 @@ class _TicketPageState extends State<TicketPage> {
                   color: Colors.blueGrey,
                 ), // Header color
                 children: [
-                  tb(value: 'Giờ', isBold: true, bg: Colors.yellow, size: 7),
-                  tb(value: 'Ngày', isBold: true, bg: Colors.yellow, size: 7),
-                  tb(value: 'Tháng', isBold: true, bg: Colors.yellow, size: 7),
-                  tb(value: 'Năm', isBold: true, bg: Colors.yellow, size: 7),
+                  tb(
+                    value: 'Giờ'.toUpperCase(),
+                    isBold: true,
+                    bg: Colors.yellow,
+                    size: 7,
+                  ),
+                  tb(
+                    value: 'Ngày'.toUpperCase(),
+                    isBold: true,
+                    bg: Colors.yellow,
+                    size: 7,
+                  ),
+                  tb(
+                    value: 'Tháng'.toUpperCase(),
+                    isBold: true,
+                    bg: Colors.yellow,
+                    size: 7,
+                  ),
+                  tb(
+                    value: 'Năm'.toUpperCase(),
+                    isBold: true,
+                    bg: Colors.yellow,
+                    size: 7,
+                  ),
                 ],
               ),
               // Header Row 2: Solar Date/Time
@@ -276,28 +330,28 @@ class _TicketPageState extends State<TicketPage> {
                     isBold: true,
                     titleColor: Colors.red,
                     bg: Colors.yellow,
-                    size: 6,
+                    size: 7,
                   ),
                   tb(
                     value: widget.model.day?.toString() ?? '',
                     isBold: true,
                     titleColor: Colors.red,
                     bg: Colors.yellow,
-                    size: 6,
+                    size: 7,
                   ),
                   tb(
                     value: widget.model.month?.toString() ?? '',
                     isBold: true,
                     titleColor: Colors.red,
                     bg: Colors.yellow,
-                    size: 6,
+                    size: 7,
                   ),
                   tb(
                     value: widget.model.year?.toString() ?? '',
                     isBold: true,
                     titleColor: Colors.red,
                     bg: Colors.yellow,
-                    size: 6,
+                    size: 7,
                   ),
                 ],
               ),
@@ -334,7 +388,10 @@ class _TicketPageState extends State<TicketPage> {
                 ), // Highlight Can row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThienCanGio(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanGio().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -344,7 +401,10 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThienCanNgay(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanNgay().toUpperCase(),
                     isBold: true,
                     titleColor:
                         AppUtil(
@@ -354,10 +414,11 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ),
                   tb(
-                    value: ThienCan.getThienCanThang(
-                      year: widget.model.year ?? 2025,
-                      month: widget.model.month ?? 1,
-                    ),
+                    value:
+                        ThienCan.getThienCanThang(
+                          year: widget.model.year ?? 2025,
+                          month: widget.model.month ?? 1,
+                        ).toUpperCase(),
                     titleColor:
                         ThienCan.getThienCanThang(
                           year: widget.model.year ?? 2025,
@@ -368,7 +429,10 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getThienCanNam(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getThienCanNam().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -386,7 +450,10 @@ class _TicketPageState extends State<TicketPage> {
                 ), // Highlight Chi row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiGio(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiGio().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -396,7 +463,10 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNgay(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiNgay().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -406,7 +476,10 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ), // Corrected to getDiaChiNgay
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiThang(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiThang().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -416,7 +489,10 @@ class _TicketPageState extends State<TicketPage> {
                     height: 30,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: solarDate!).getDiaChiNam(),
+                    value:
+                        AppUtil(
+                          solarDateTime: solarDate!,
+                        ).getDiaChiNam().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: solarDate!,
@@ -455,10 +531,11 @@ class _TicketPageState extends State<TicketPage> {
                           ) {
                             return Expanded(
                               child: tb(
-                                value: e,
-                                style: TextStyle(
-                                  color: e.toColor(),
+                                value: e.toUpperCase(),
+                                style: baseStyle.copyWith(
                                   fontSize: 4,
+                                  color: e.toColor(),
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             );
@@ -487,8 +564,8 @@ class _TicketPageState extends State<TicketPage> {
                               .map(
                                 (e) => Expanded(
                                   child: tb(
-                                    value: e,
-                                    style: TextStyle(
+                                    value: e.toUpperCase(),
+                                    style: baseStyle.copyWith(
                                       color: e.toColor(),
                                       fontSize: 5,
                                       fontWeight: FontWeight.w400,
@@ -521,8 +598,8 @@ class _TicketPageState extends State<TicketPage> {
                               .map(
                                 (e) => Expanded(
                                   child: tb(
-                                    value: e,
-                                    style: TextStyle(
+                                    value: e.toUpperCase(),
+                                    style: baseStyle.copyWith(
                                       color: e.toColor(),
                                       fontSize: 5,
                                     ),
@@ -554,8 +631,8 @@ class _TicketPageState extends State<TicketPage> {
                               .map(
                                 (e) => Expanded(
                                   child: tb(
-                                    value: e,
-                                    style: TextStyle(
+                                    value: e.toUpperCase(),
+                                    style: baseStyle.copyWith(
                                       color: e.toColor(),
                                       fontSize: 5,
                                     ),
@@ -592,28 +669,28 @@ class _TicketPageState extends State<TicketPage> {
                         AppUtil(solarDateTime: solarDate!).getTruongSinhGio(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                   tb(
                     value:
                         AppUtil(solarDateTime: solarDate!).getTruongSinhNgay(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                   tb(
                     value:
                         AppUtil(solarDateTime: solarDate!).getTruongSinhThang(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                   tb(
                     value:
                         AppUtil(solarDateTime: solarDate!).getTruongSinhNam(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                 ],
               ),
@@ -623,22 +700,26 @@ class _TicketPageState extends State<TicketPage> {
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getNapAmGio(),
                     bg: Colors.grey.shade200,
-                    size: 6,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getNapAmNgay(),
                     bg: Colors.grey.shade200,
-                    size: 6,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getNapAmThang(),
                     bg: Colors.grey.shade200,
-                    size: 6,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: solarDate!).getNapAmNam(),
                     bg: Colors.grey.shade200,
-                    size: 6,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                 ],
               ),
@@ -657,14 +738,14 @@ class _TicketPageState extends State<TicketPage> {
                 children: [
                   // Combined Đại Vận Header
                   tb(
-                    value: 'Đại Vận',
+                    value: 'Đại Vận'.toUpperCase(),
                     isBold: true,
                     bg: Colors.yellow,
                     size: 7,
                   ),
                   // Combined Tuổi Header
                   tb(
-                    value: 'Lưu Niên',
+                    value: 'Lưu Niên'.toUpperCase(),
                     isBold: true,
                     bg: Colors.yellow,
                     size: 7,
@@ -712,7 +793,10 @@ class _TicketPageState extends State<TicketPage> {
                 ), // Highlight Can row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: dateDaVan).getThienCanGio(),
+                    value:
+                        AppUtil(
+                          solarDateTime: dateDaVan,
+                        ).getThienCanGio().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: dateDaVan,
@@ -723,7 +807,9 @@ class _TicketPageState extends State<TicketPage> {
                   ),
                   tb(
                     value:
-                        AppUtil(solarDateTime: DateTime.now()).getThienCanGio(),
+                        AppUtil(
+                          solarDateTime: DateTime.now(),
+                        ).getThienCanGio().toUpperCase(),
 
                     isBold: true,
                     titleColor:
@@ -742,7 +828,10 @@ class _TicketPageState extends State<TicketPage> {
                 ), // Highlight Chi row
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: dateDaVan).getDiaChiGio(),
+                    value:
+                        AppUtil(
+                          solarDateTime: dateDaVan,
+                        ).getDiaChiGio().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: dateDaVan,
@@ -753,7 +842,9 @@ class _TicketPageState extends State<TicketPage> {
                   ),
                   tb(
                     value:
-                        AppUtil(solarDateTime: DateTime.now()).getDiaChiGio(),
+                        AppUtil(
+                          solarDateTime: DateTime.now(),
+                        ).getDiaChiGio().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: DateTime.now(),
@@ -790,8 +881,8 @@ class _TicketPageState extends State<TicketPage> {
                               .map(
                                 (e) => Expanded(
                                   child: tb(
-                                    value: e,
-                                    style: TextStyle(
+                                    value: e.toUpperCase(),
+                                    style: baseStyle.copyWith(
                                       color: e.toColor(),
                                       fontSize: 5,
                                     ),
@@ -824,8 +915,8 @@ class _TicketPageState extends State<TicketPage> {
                               .map(
                                 (e) => Expanded(
                                   child: tb(
-                                    value: e,
-                                    style: TextStyle(
+                                    value: e.toUpperCase(),
+                                    style: baseStyle.copyWith(
                                       color: e.toColor(),
                                       fontSize: 5,
                                     ),
@@ -848,7 +939,7 @@ class _TicketPageState extends State<TicketPage> {
                     value: AppUtil(solarDateTime: dateDaVan).getTruongSinhGio(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                   tb(
                     value:
@@ -857,7 +948,7 @@ class _TicketPageState extends State<TicketPage> {
                         ).getTruongSinhGio(),
                     size: 6,
                     bg: Colors.grey.shade200,
-                    titleColor: Colors.grey,
+                    titleColor: Colors.black54,
                   ),
                 ],
               ),
@@ -866,14 +957,14 @@ class _TicketPageState extends State<TicketPage> {
                   tb(
                     value: AppUtil(solarDateTime: dateDaVan).getNapAmGio(),
                     bg: Colors.grey.shade200,
-                    size: 6,
-                    isBold: true,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                   tb(
                     value: AppUtil(solarDateTime: DateTime.now()).getNapAmGio(),
                     bg: Colors.grey.shade200,
-                    size: 6,
-                    isBold: true,
+                    size: 6.5,
+                    titleColor: Colors.black,
                   ),
                 ],
               ),
@@ -884,13 +975,13 @@ class _TicketPageState extends State<TicketPage> {
         Expanded(
           flex: 1, // Adjusted flex
           child: Table(
-            border: TableBorder.all(width: 0.5, color: Colors.grey.shade200),
+            border: TableBorder.all(width: 0.1, color: Colors.black),
             children: [
               TableRow(
                 decoration: BoxDecoration(color: Colors.blueGrey),
                 children: [
                   tb(
-                    value: 'Dương \nLịch',
+                    value: 'Dương \nLịch'.toUpperCase(),
                     isBold: true,
                     bg: Colors.yellow,
                     height: 36,
@@ -901,7 +992,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'Xuất Can',
+                    value: 'Xuất Can'.toUpperCase(),
                     isBold: true,
                     bg: Colors.grey.shade200,
                     size: 5,
@@ -911,18 +1002,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'Thiên Can',
-                    isBold: true,
-                    bg: Colors.grey.shade200,
-                    height: 30,
-                    size: 5,
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  tb(
-                    value: 'Địa Chi',
+                    value: 'Thiên Can'.toUpperCase(),
                     isBold: true,
                     bg: Colors.grey.shade200,
                     height: 30,
@@ -933,7 +1013,18 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'Tàng Can',
+                    value: 'Địa Chi'.toUpperCase(),
+                    isBold: true,
+                    bg: Colors.grey.shade200,
+                    height: 30,
+                    size: 5,
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  tb(
+                    value: 'Tàng Can'.toUpperCase(),
                     isBold: true,
                     bg: Colors.grey.shade200,
                     size: 5,
@@ -943,7 +1034,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'Thần sát\n đặt biệt',
+                    value: 'Thần sát\n đặt biệt'.toUpperCase(),
                     isBold: true,
                     bg: Colors.grey.shade200,
                     height: 34,
@@ -954,7 +1045,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'TrườngSinh',
+                    value: 'TrườngSinh'.toUpperCase(),
                     size: 5,
                     isBold: true,
                     bg: Colors.grey.shade200,
@@ -964,7 +1055,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: 'Nạp Âm',
+                    value: 'Nạp Âm'.toUpperCase(),
                     isBold: true,
                     bg: Colors.grey.shade200,
                     size: 5,
@@ -978,40 +1069,6 @@ class _TicketPageState extends State<TicketPage> {
     );
   }
 
-  // Widget _buildContent5(Font ttf) {
-  //   return Column(
-  //     children: [
-  //       Text(
-  //         'THÔNG TIN KHÁC',
-  //         style: TextStyle(
-  //           fontSize: 14,
-  //           fontWeight: FontWeight.bold,
-  //           font: ttf,
-  //         ),
-  //       ),
-  //       SizedBox(height: 8),
-  //       Text('Thập Thần: Chính Tài', style: baseTextStyle), // Example data
-  //       Text(
-  //         'Mệnh Cục: Kim sinh Thuỷ',
-  //         style: baseTextStyle,
-  //       ), // Example data
-  //       Text(
-  //         'Tiết Khí: ${AppUtil(solarDateTime: solarDate!).getTietKhiHienTaiCuaNgay()}', // Use actual data
-  //         style: baseTextStyle,
-  //       ),
-  //       Text(
-  //         'Bành Tổ Bách Kỵ (Can ngày): ${lunar?.getPengZuGan() ?? ''}',
-  //         style: baseTextStyle,
-  //       ),
-  //       Text(
-  //         'Bành Tổ Bách Kỵ (Chi ngày): ${lunar?.getPengZuZhi() ?? ''}',
-  //         style: baseTextStyle,
-  //       ),
-  //       SizedBox(height: 10),
-  //     ],
-  //   );
-  // }
-
   // Helper function for creating table cells (tb = table box)
   Widget tb({
     Color? bg,
@@ -1024,12 +1081,12 @@ class _TicketPageState extends State<TicketPage> {
     bool? isAutoScale = false,
   }) {
     // Ensure baseTextStyle is initialized
-    final effectiveTextStyle = (baseTextStyle ?? TextStyle(fontSize: 9))
-        .copyWith(
-          color: titleColor ?? Colors.black,
-          fontWeight: (isBold ?? false) ? FontWeight.w600 : FontWeight.normal,
-          fontSize: size ?? 9, // Use provided size or default
-        );
+    final effectiveTextStyle = (baseStyle).copyWith(
+      color: titleColor ?? Colors.black,
+      fontWeight: (isBold ?? false) ? FontWeight.w800 : FontWeight.normal,
+      fontSize: size ?? 9, // Use provided size or default
+      fontFamily: Assets.fonts.uTMAvoBold,
+    );
 
     return Material(
       child: Container(
@@ -1083,7 +1140,7 @@ class _TicketPageState extends State<TicketPage> {
     return Column(
       children: [
         tb(
-          value: 'Đại Vận',
+          value: 'Đại Vận'.toUpperCase(),
           isBold: true,
           bg: Colors.yellow,
           height: 18,
@@ -1100,20 +1157,33 @@ class _TicketPageState extends State<TicketPage> {
                   border: TableBorder.all(width: 0.1, color: Colors.black),
                   children: [
                     TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(
-                          value: 'Năm ${yearStart + index * 10}',
-
-                          size: 5,
-                          bg:
-                              (yearStart + index * 10) == DateTime.now().year
-                                  ? Colors.yellow
-                                  : Colors
-                                      .grey
-                                      .shade300, // Light grey background for header
-                        ),
-                      ),
+                      children: List.generate(8, (index) {
+                        return Container(
+                          height: 18,
+                          alignment: Alignment.center,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${yearStart + index * 10}',
+                                  style: baseStyle.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 8,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      '(${yearStart + index * 10 - (widget.model.year ?? 0)}T)',
+                                  style: baseStyle.copyWith(
+                                    fontSize: 5,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
                     ),
                     TableRow(
                       children: List.generate(
@@ -1131,7 +1201,8 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                 ),
                               ).getThapThanNam(),
-                          size: 5,
+                          size: 6,
+                          titleColor: Colors.black,
                         ), // Example data
                       ),
                     ),
@@ -1151,7 +1222,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                   1,
                                 ),
-                              ).getThienCanNam(),
+                              ).getThienCanNam().toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1180,7 +1251,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                   1,
                                 ),
-                              ).getDiaChiNam(),
+                              ).getDiaChiNam().toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1215,8 +1286,8 @@ class _TicketPageState extends State<TicketPage> {
                                   items.map((e) {
                                     return Expanded(
                                       child: tb(
-                                        value: e,
-                                        style: TextStyle(
+                                        value: e.toUpperCase(),
+                                        style: baseStyle.copyWith(
                                           color: e.toColor(),
                                           fontSize: 4.5,
                                           fontWeight: FontWeight.w500,
@@ -1271,7 +1342,7 @@ class _TicketPageState extends State<TicketPage> {
                               ).getTruongSinhNam(),
                           size: 6,
                           isBold: false,
-                          titleColor: Colors.grey,
+                          titleColor: Colors.black54,
                         ), // Example data
                       ),
                     ),
@@ -1291,8 +1362,9 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                 ),
                               ).getNapAmNam(),
-                          size: 5,
+                          size: 5.5,
                           isBold: false,
+                          titleColor: Colors.black,
                         ), // Example data
                       ),
                     ),
@@ -1303,10 +1375,7 @@ class _TicketPageState extends State<TicketPage> {
               Expanded(
                 flex: 1,
                 child: Table(
-                  border: TableBorder.all(
-                    width: 0.5,
-                    color: Colors.grey.shade200,
-                  ),
+                  border: TableBorder.all(width: 0.1, color: Colors.black),
                   children: [
                     TableRow(
                       children: [
@@ -1316,7 +1385,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Xuất Can',
+                          value: 'Xuất Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1326,7 +1395,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thiên Can',
+                          value: 'Thiên Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1336,7 +1405,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Địa Chi',
+                          value: 'Địa Chi'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1346,7 +1415,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Tàng Can',
+                          value: 'Tàng Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1357,7 +1426,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thần sát\nđặt biệt',
+                          value: 'Thần sát\nđặt biệt'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           height: 36,
@@ -1368,7 +1437,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'TrườngSinh',
+                          value: 'TrườngSinh'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1378,7 +1447,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Nạp Âm',
+                          value: 'Nạp Âm'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 5,
@@ -1401,7 +1470,7 @@ class _TicketPageState extends State<TicketPage> {
     return Column(
       children: [
         tb(
-          value: 'Lưu Niên',
+          value: 'Lưu Niên'.toUpperCase(),
           isBold: true,
           bg: Colors.yellow,
           height: 18,
@@ -1420,18 +1489,33 @@ class _TicketPageState extends State<TicketPage> {
                   border: TableBorder.all(width: 0.1, color: Colors.black),
                   children: [
                     TableRow(
-                      children: List.generate(
-                        8,
-                        (index) => tb(
-                          value: 'Năm ${yearStart + index}',
-                          size: 5,
-                          // isBold: true,
-                          bg:
-                              Colors
-                                  .grey
-                                  .shade300, // Light grey background for header
-                        ),
-                      ),
+                      children: List.generate(8, (index) {
+                        return Container(
+                          height: 18,
+                          alignment: Alignment.center,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${yearStart + index * 10}',
+                                  style: baseStyle.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 8,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      '(${yearStart + index * 10 - (widget.model.year ?? 0)}T)',
+                                  style: baseStyle.copyWith(
+                                    fontSize: 5,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
                     ),
                     TableRow(
                       children: List.generate(
@@ -1449,7 +1533,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                 ),
                               ).getThapThanNam(),
-                          size: 5,
+                          size: 6,
                         ), // Example data
                       ),
                     ),
@@ -1469,7 +1553,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                   1,
                                 ),
-                              ).getThienCanNam(),
+                              ).getThienCanNam().toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1498,7 +1582,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                   1,
                                 ),
-                              ).getDiaChiNam(),
+                              ).getDiaChiNam().toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1547,11 +1631,12 @@ class _TicketPageState extends State<TicketPage> {
                                     .map(
                                       (e) => Expanded(
                                         child: tb(
-                                          value: e,
+                                          value: e.toUpperCase(),
 
-                                          style: TextStyle(
+                                          style: baseStyle.copyWith(
                                             color: e.toColor(),
                                             fontSize: 4,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
@@ -1602,7 +1687,7 @@ class _TicketPageState extends State<TicketPage> {
                                 ),
                               ).getTruongSinhNam(),
                           size: 6,
-                          titleColor: Colors.grey,
+                          titleColor: Colors.black54,
                         ), // Example data
                       ),
                     ),
@@ -1623,7 +1708,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1,
                                 ),
                               ).getNapAmNam(),
-                          size: 5,
+                          size: 5.5,
                         ), // Example data
                       ),
                     ),
@@ -1633,10 +1718,7 @@ class _TicketPageState extends State<TicketPage> {
               Container(width: 1),
               Expanded(
                 child: Table(
-                  border: TableBorder.all(
-                    width: 0.5,
-                    color: Colors.grey.shade200,
-                  ),
+                  border: TableBorder.all(width: 0.1, color: Colors.black),
                   children: [
                     TableRow(
                       children: [
@@ -1646,7 +1728,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Xuất Can',
+                          value: 'Xuất Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1656,7 +1738,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thiên Can',
+                          value: 'Thiên Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1666,7 +1748,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Địa Chi',
+                          value: 'Địa Chi'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1676,7 +1758,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Tàng Can',
+                          value: 'Tàng Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1687,7 +1769,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thần sát\nđặt biệt',
+                          value: 'Thần sát\nđặt biệt'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           height: 36,
@@ -1698,17 +1780,18 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Trường Sinh',
+                          value: 'Trường Sinh'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
+                          titleColor: Colors.black,
                         ),
                       ],
                     ),
                     TableRow(
                       children: [
                         tb(
-                          value: 'Nạp Âm',
+                          value: 'Nạp Âm'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1752,13 +1835,13 @@ class _TicketPageState extends State<TicketPage> {
                       children: List.generate(
                         12,
                         (index) => tb(
-                          value: 'Tháng ${index + 1}',
-                          // isBold: true,
+                          value: 'Tháng ${index + 1}'.toUpperCase(),
+                          isBold: true,
                           bg:
                               Colors
                                   .grey
                                   .shade300, // Light grey background for header
-                          size: 5,
+                          size: 4.5,
                           titleColor: Colors.black,
                         ),
                       ),
@@ -1793,9 +1876,16 @@ class _TicketPageState extends State<TicketPage> {
                               index + 1 == (widget.model.month ?? -1)
                                   ? Colors.yellow
                                   : Colors.white,
-                          value: AppUtil(
-                            solarDateTime: DateTime(date.year, index + 1, 1),
-                          ).getThienCanThang(thang: index + 1),
+                          value:
+                              AppUtil(
+                                    solarDateTime: DateTime(
+                                      date.year,
+                                      index + 1,
+                                      1,
+                                    ),
+                                  )
+                                  .getThienCanThang(thang: index + 1)
+                                  .toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1824,7 +1914,7 @@ class _TicketPageState extends State<TicketPage> {
                                   1 + index,
                                   1,
                                 ),
-                              ).getDiaChiThang(),
+                              ).getDiaChiThang().toUpperCase(),
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
@@ -1874,7 +1964,7 @@ class _TicketPageState extends State<TicketPage> {
                                     .map(
                                       (e) => Expanded(
                                         child: tb(
-                                          value: e,
+                                          value: e.toUpperCase(),
                                           titleColor: e.toColor(),
                                           size: 4,
                                           isAutoScale: true,
@@ -1919,6 +2009,7 @@ class _TicketPageState extends State<TicketPage> {
                               ).getTruongSinhThang(),
                           size: 5,
                           isAutoScale: true,
+                          titleColor: Colors.black54,
                         ), // Example data
                       ),
                     ),
@@ -1939,8 +2030,8 @@ class _TicketPageState extends State<TicketPage> {
                                   1 + index,
                                   1,
                                 ),
-                              ).getNapAmNam(),
-                          size: 5,
+                              ).getNapAmThang(),
+                          size: 4.5,
                           isAutoScale: true,
                         ), // Example data
                       ),
@@ -1952,10 +2043,7 @@ class _TicketPageState extends State<TicketPage> {
               Expanded(
                 flex: 1,
                 child: Table(
-                  border: TableBorder.all(
-                    width: 0.5,
-                    color: Colors.grey.shade200,
-                  ),
+                  border: TableBorder.all(width: 0.1, color: Colors.black),
                   children: [
                     TableRow(
                       children: [
@@ -1965,7 +2053,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Xuất Can',
+                          value: 'Xuất Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1975,7 +2063,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thiên Can',
+                          value: 'Thiên Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1985,7 +2073,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Địa Chi',
+                          value: 'Địa Chi'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           size: 4.2,
@@ -1995,7 +2083,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Tàng Can',
+                          value: 'Tàng Can'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           height: 18,
@@ -2006,7 +2094,7 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Thần sát\nđặt biệt',
+                          value: 'Thần sát\nđặt biệt'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
                           // height: 2,
@@ -2017,9 +2105,10 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: 'Trường\nSinh',
+                          value: 'Trường\nSinh'.toUpperCase(),
                           isBold: true,
                           bg: Colors.grey.shade200,
+                          titleColor: Colors.black54,
                           // height: 30,
                           size: 4.2,
                         ),
@@ -2143,34 +2232,54 @@ class _TicketPageState extends State<TicketPage> {
                   children: [
                     TableRow(
                       children: [
-                        tb(value: 'Thái Cung', bg: Colors.yellow, size: 4),
-                        tb(value: 'Mệnh Cung', bg: Colors.yellow, size: 4),
-                        tb(value: 'Thai Tức', bg: Colors.yellow, size: 4),
-                        tb(value: 'Trụ Phút', bg: Colors.yellow, size: 4),
+                        tb(
+                          value: 'Thái Cung'.toUpperCase(),
+                          bg: Colors.yellow,
+                          size: 3.8,
+                          isBold: true,
+                        ),
+                        tb(
+                          value: 'Mệnh Cung'.toUpperCase(),
+                          bg: Colors.yellow,
+                          size: 3.8,
+                          isBold: true,
+                        ),
+                        tb(
+                          value: 'Thai Tức'.toUpperCase(),
+                          bg: Colors.yellow,
+                          size: 3.8,
+                          isBold: true,
+                        ),
+                        tb(
+                          value: 'Trụ Phút'.toUpperCase(),
+                          bg: Colors.yellow,
+                          size: 3.8,
+                          isBold: true,
+                        ),
                       ], // Example data
                     ),
                     TableRow(
                       children: [
                         tb(
-                          value: thaicung.first,
+                          value: thaicung.first.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: thaicung.first.toColor(),
                         ),
                         tb(
-                          value: menhcung.first,
+                          value: menhcung.first.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: menhcung.first.toColor(),
                         ),
                         tb(
-                          value: thaituc.first,
+                          value: thaituc.first.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: thaituc.first.toColor(),
                         ),
                         tb(
-                          value: truphuc.first,
+                          value: truphuc.first.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: truphuc.first.toColor(),
@@ -2180,25 +2289,25 @@ class _TicketPageState extends State<TicketPage> {
                     TableRow(
                       children: [
                         tb(
-                          value: thaicung.last,
+                          value: thaicung.last.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: thaicung.last.toColor(),
                         ),
                         tb(
-                          value: menhcung.last,
+                          value: menhcung.last.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: menhcung.last.toColor(),
                         ),
                         tb(
-                          value: thaituc.last,
+                          value: thaituc.last.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: thaituc.last.toColor(),
                         ),
                         tb(
-                          value: truphuc.last,
+                          value: truphuc.last.toUpperCase(),
                           size: 6,
                           isBold: true,
                           titleColor: truphuc.last.toColor(),
@@ -2217,10 +2326,11 @@ class _TicketPageState extends State<TicketPage> {
                       TableRow(
                         children: [
                           SizedBox(
-                            width: 60,
+                            width: 40,
                             height: 30,
                             child: tb(
-                              value: 'Đại Vận',
+                              value: 'Đại Vận'.toUpperCase(),
+                              isBold: true,
                               bg: Colors.yellow,
                               size: 5,
                             ),
@@ -2252,17 +2362,17 @@ class _TicketPageState extends State<TicketPage> {
                       TableRow(
                         children: [
                           tb(
-                            value: 'Tiết Khí',
+                            value: 'Tiết Khí'.toUpperCase(),
+                            isBold: true,
                             bg: Colors.yellow,
                             size: 5,
                             height: 24,
                           ),
                           tb(
                             height: 24,
-                            value:
-                                AppUtil(
-                                  solarDateTime: solarDate!,
-                                ).getTietKhiHienTaiCuaNgay(),
+                            value: AppUtil(
+                              solarDateTime: solarDate!,
+                            ).getSolarTermByDate(solarDate!),
                             // height: 30,
                             size: 5,
                           ),
@@ -2279,14 +2389,46 @@ class _TicketPageState extends State<TicketPage> {
                     children: [
                       TableRow(
                         children: [
-                          SizedBox(width: 40, child: tb(value: 'Kim', size: 6)),
                           SizedBox(
                             width: 40,
-                            child: tb(value: 'Thuỷ', size: 6),
+                            child: tb(
+                              value: 'Kim'.toUpperCase(),
+                              isBold: true,
+                              size: 6,
+                            ),
                           ),
-                          SizedBox(width: 40, child: tb(value: 'Mộc', size: 6)),
-                          SizedBox(width: 40, child: tb(value: 'Hoả', size: 6)),
-                          SizedBox(width: 40, child: tb(value: 'Thổ', size: 6)),
+                          SizedBox(
+                            width: 40,
+                            child: tb(
+                              value: 'Thuỷ'.toUpperCase(),
+                              isBold: true,
+                              size: 6,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 40,
+                            child: tb(
+                              value: 'Mộc'.toUpperCase(),
+                              isBold: true,
+                              size: 6,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 40,
+                            child: tb(
+                              value: 'Hoả'.toUpperCase(),
+                              isBold: true,
+                              size: 6,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 40,
+                            child: tb(
+                              value: 'Thổ'.toUpperCase(),
+                              isBold: true,
+                              size: 6,
+                            ),
+                          ),
                         ], // Example data
                       ),
                       TableRow(
@@ -2366,10 +2508,11 @@ class _TicketPageState extends State<TicketPage> {
           SizedBox(
             height: 18,
             child: tb(
-              value: 'Thập Thần',
+              value: 'Thập Thần'.toUpperCase(),
               bg: Colors.yellow,
+              isBold: true,
               // height: 24,
-              size: 8,
+              size: 7,
             ),
           ),
 
@@ -2379,20 +2522,40 @@ class _TicketPageState extends State<TicketPage> {
               children: [
                 TableRow(
                   children: [
-                    SizedBox(width: 30, child: tb(value: 'TK', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'TK', isBold: true, size: 6),
+                    ),
                     SizedBox(width: 60, child: tb(value: 'Tỷ Kiên', size: 5)),
-                    SizedBox(width: 30, child: tb(value: 'KT', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(
+                        value: 'KT'.toUpperCase(),
+                        size: 6,
+                        isBold: true,
+                      ),
+                    ),
                     SizedBox(width: 60, child: tb(value: 'Kiếp Tài', size: 5)),
                   ], // Example data
                 ),
                 TableRow(
                   children: [
-                    SizedBox(width: 30, child: tb(value: 'TH', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(
+                        value: 'TH'.toUpperCase(),
+                        size: 6,
+                        isBold: true,
+                      ),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Thực Thần', isAutoScale: true),
                     ),
-                    SizedBox(width: 30, child: tb(value: 'TQ', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'TQ', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(
@@ -2405,12 +2568,18 @@ class _TicketPageState extends State<TicketPage> {
                 ),
                 TableRow(
                   children: [
-                    SizedBox(width: 30, child: tb(value: 'CA', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'CA', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Chính Ấn', size: 5, isAutoScale: true),
                     ),
-                    SizedBox(width: 30, child: tb(value: 'TA', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'TA', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Thiên Ấn', size: 5, isAutoScale: true),
@@ -2419,12 +2588,18 @@ class _TicketPageState extends State<TicketPage> {
                 ),
                 TableRow(
                   children: [
-                    SizedBox(width: 30, child: tb(value: 'CT', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'CT', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Chính Tài', size: 5, isAutoScale: true),
                     ),
-                    SizedBox(width: 30, child: tb(value: 'TT', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'TT', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Thiên Tài', size: 5, isAutoScale: true),
@@ -2433,7 +2608,10 @@ class _TicketPageState extends State<TicketPage> {
                 ),
                 TableRow(
                   children: [
-                    SizedBox(width: 30, child: tb(value: 'CQ', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'CQ', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(
@@ -2442,7 +2620,10 @@ class _TicketPageState extends State<TicketPage> {
                         isAutoScale: true,
                       ),
                     ),
-                    SizedBox(width: 30, child: tb(value: 'TS', size: 5)),
+                    SizedBox(
+                      width: 30,
+                      child: tb(value: 'TS', size: 6, isBold: true),
+                    ),
                     SizedBox(
                       width: 60,
                       child: tb(value: 'Thất Sát', size: 5, isAutoScale: true),
@@ -2468,10 +2649,11 @@ class _TicketPageState extends State<TicketPage> {
           SizedBox(
             height: 18,
             child: tb(
-              value: 'Thần Sát Nguyên Cục',
+              value: 'Thần Sát Nguyên Cục'.toUpperCase(),
+              isBold: true,
               bg: Colors.yellow,
               height: 18,
-              size: 8,
+              size: 7,
             ),
           ),
 
@@ -2484,7 +2666,8 @@ class _TicketPageState extends State<TicketPage> {
                     SizedBox(
                       width: 60,
                       child: tb(
-                        value: 'Giờ',
+                        value: 'Giờ'.toUpperCase(),
+                        isBold: true,
                         bg: Colors.grey.shade200,
                         size: 6,
                       ),
@@ -2492,7 +2675,8 @@ class _TicketPageState extends State<TicketPage> {
                     SizedBox(
                       width: 60,
                       child: tb(
-                        value: 'Ngày',
+                        value: 'Ngày'.toUpperCase(),
+                        isBold: true,
                         bg: Colors.grey.shade200,
                         size: 6,
                       ),
@@ -2500,7 +2684,8 @@ class _TicketPageState extends State<TicketPage> {
                     SizedBox(
                       width: 60,
                       child: tb(
-                        value: 'Tháng',
+                        value: 'Tháng'.toUpperCase(),
+                        isBold: true,
                         bg: Colors.grey.shade200,
                         size: 6,
                       ),
@@ -2508,14 +2693,15 @@ class _TicketPageState extends State<TicketPage> {
                     SizedBox(
                       width: 60,
                       child: tb(
-                        value: 'Năm',
+                        value: 'Năm'.toUpperCase(),
+                        isBold: true,
                         bg: Colors.grey.shade200,
                         size: 6,
                       ),
                     ),
                   ], // Example data
                 ),
-                ...List.generate(6, (index) {
+                ...List.generate(5, (index) {
                   final gio =
                       (thanSat['gio']?.length ?? -1) > index
                           ? (thanSat['gio']?[index] ?? '')
@@ -2532,12 +2718,45 @@ class _TicketPageState extends State<TicketPage> {
                       (thanSat['nam']?.length ?? -1) > index
                           ? (thanSat['nam']?[index] ?? '')
                           : '';
+
                   return TableRow(
                     children: [
-                      SizedBox(width: 60, child: tb(value: gio, size: 4.2)),
-                      SizedBox(width: 60, child: tb(value: ngay, size: 4.2)),
-                      SizedBox(width: 60, child: tb(value: thang, size: 4.2)),
-                      SizedBox(width: 60, child: tb(value: nam, size: 4.2)),
+                      SizedBox(
+                        width: 60,
+                        child: tb(
+                          value: gio,
+                          size: 4.1,
+                          titleColor: getColor(gio),
+                          height: 19,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 60,
+                        child: tb(
+                          value: ngay,
+                          size: 4.1,
+                          titleColor: getColor(ngay),
+                          height: 19,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 60,
+                        child: tb(
+                          value: thang,
+                          size: 4.1,
+                          titleColor: getColor(thang),
+                          height: 19,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 60,
+                        child: tb(
+                          value: nam,
+                          size: 4.1,
+                          titleColor: getColor(nam),
+                          height: 19,
+                        ),
+                      ),
                     ], // Example data
                   );
                 }),
@@ -2547,5 +2766,18 @@ class _TicketPageState extends State<TicketPage> {
         ],
       ),
     );
+  }
+
+  Color getColor(String t) {
+    if (t.contains('Quý Nhân')) {
+      return Colors.red;
+    }
+    if (t.contains('Khôi Canh')) {
+      return Colors.green;
+    }
+    if (t.contains('Hoa Tinh')) {
+      return Colors.blue;
+    }
+    return Colors.black;
   }
 }

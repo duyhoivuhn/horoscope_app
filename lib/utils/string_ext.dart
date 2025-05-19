@@ -31,11 +31,21 @@ import 'package:flutter/material.dart';
 //   alpha: 1,
 // );
 
-final gray = Colors.grey;
+final gray = Color.from(
+  red: 147 / 255,
+  green: 149 / 255,
+  blue: 152 / 255,
+  alpha: 1,
+);
 final blue = Colors.blue;
 final green = Colors.green;
 final red = Colors.red;
-final brow = Colors.brown;
+final brow = Color.from(
+  red: 111 / 255,
+  green: 78 / 255,
+  blue: 48 / 255,
+  alpha: 1,
+);
 
 extension StringExt on String {
   Color toColor() {

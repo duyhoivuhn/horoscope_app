@@ -15,8 +15,21 @@ class $AssetsFontsGen {
   /// File path: assets/fonts/RobotoMono.ttf
   String get robotoMono => 'assets/fonts/RobotoMono.ttf';
 
+  /// File path: assets/fonts/UTM_Avo.ttf
+  String get uTMAvo => 'assets/fonts/UTM_Avo.ttf';
+
+  /// File path: assets/fonts/UTM_AvoBold.ttf
+  String get uTMAvoBold => 'assets/fonts/UTM_AvoBold.ttf';
+
+  /// File path: assets/fonts/UTM_AvoBold_Italic.ttf
+  String get uTMAvoBoldItalic => 'assets/fonts/UTM_AvoBold_Italic.ttf';
+
+  /// File path: assets/fonts/UTM_AvoItalic.ttf
+  String get uTMAvoItalic => 'assets/fonts/UTM_AvoItalic.ttf';
+
   /// List of all assets
-  List<String> get values => [robotoMono];
+  List<String> get values =>
+      [robotoMono, uTMAvo, uTMAvoBold, uTMAvoBoldItalic, uTMAvoItalic];
 }
 
 class $AssetsIconsGen {

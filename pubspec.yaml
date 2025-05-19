@@ -78,6 +78,11 @@ flutter:
     - family: RobotoMono
       fonts:
         - asset: assets/fonts/RobotoMono.ttf
+    - family: UTM_AvoBold
+      fonts:
+        - asset: assets/fonts/UTM_AvoBold.ttf
+           
+        
 
 
 flutter_gen:

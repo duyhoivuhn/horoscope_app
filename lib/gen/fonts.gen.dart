@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: RobotoMono
   static const String robotoMono = 'RobotoMono';
+
+  /// Font family: UTM_AvoBold
+  static const String uTMAvoBold = 'UTM_AvoBold';
 }
