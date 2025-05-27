@@ -247,7 +247,29 @@ class AppUtil {
 
   String getDiaChiThang() {
     Lunar lunarDate = Lunar.fromDate(solarDateTime);
-    return lunarDate.getDayZhi();
+    // return lunarDate.getMonthZhiExact();
+    final thangAmLich = lunarDate.getMonth();
+    final diaChiList = [
+      'Dần',
+      'Mão',
+      'Thìn',
+      'Tỵ',
+      'Ngọ',
+      'Mùi',
+      'Thân',
+      'Dậu',
+      'Tuất',
+      'Hợi',
+      'Tý',
+      'Sửu',
+    ];
+
+    // thangAmLich từ 1 đến 12
+    if (thangAmLich < 1 || thangAmLich > 12) {
+      return '';
+    }
+
+    return diaChiList[thangAmLich - 1];
   }
 
   String getDiaChiNam() {

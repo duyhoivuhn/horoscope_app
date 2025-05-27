@@ -776,12 +776,12 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: dateDaVan).getThapThanGio(),
+                    value: AppUtil(solarDateTime: dateDaVan).getThapThanNam(),
                     style: TextStyle(fontSize: 6, fontWeight: FontWeight.w500),
                   ),
                   tb(
                     value:
-                        AppUtil(solarDateTime: DateTime.now()).getThapThanGio(),
+                        AppUtil(solarDateTime: DateTime.now()).getThapThanNam(),
                     style: TextStyle(fontSize: 6, fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -796,11 +796,11 @@ class _TicketPageState extends State<TicketPage> {
                     value:
                         AppUtil(
                           solarDateTime: dateDaVan,
-                        ).getThienCanGio().toUpperCase(),
+                        ).getThienCanNam().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: dateDaVan,
-                        ).getThienCanGio().toColor(),
+                        ).getThienCanNam().toColor(),
                     isBold: true,
                     size: 10,
                     height: 30,
@@ -809,13 +809,13 @@ class _TicketPageState extends State<TicketPage> {
                     value:
                         AppUtil(
                           solarDateTime: DateTime.now(),
-                        ).getThienCanGio().toUpperCase(),
+                        ).getThienCanNam().toUpperCase(),
 
                     isBold: true,
                     titleColor:
                         AppUtil(
                           solarDateTime: DateTime.now(),
-                        ).getThienCanGio().toColor(), // Highlight Day Master
+                        ).getThienCanNam().toColor(), // Highlight Day Master
                     size: 10,
                     height: 30,
                   ),
@@ -831,11 +831,11 @@ class _TicketPageState extends State<TicketPage> {
                     value:
                         AppUtil(
                           solarDateTime: dateDaVan,
-                        ).getDiaChiGio().toUpperCase(),
+                        ).getDiaChiNam().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: dateDaVan,
-                        ).getDiaChiGio().toColor(),
+                        ).getDiaChiNam().toColor(),
                     isBold: true,
                     size: 12,
                     height: 30,
@@ -844,11 +844,11 @@ class _TicketPageState extends State<TicketPage> {
                     value:
                         AppUtil(
                           solarDateTime: DateTime.now(),
-                        ).getDiaChiGio().toUpperCase(),
+                        ).getDiaChiNam().toUpperCase(),
                     titleColor:
                         AppUtil(
                           solarDateTime: DateTime.now(),
-                        ).getDiaChiGio().toColor(),
+                        ).getDiaChiNam().toColor(),
                     isBold: true,
                     size: 12,
                     height: 30,
@@ -936,7 +936,7 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: dateDaVan).getTruongSinhGio(),
+                    value: AppUtil(solarDateTime: dateDaVan).getTruongSinhNam(),
                     size: 6,
                     bg: Colors.grey.shade200,
                     titleColor: Colors.black54,
@@ -945,7 +945,7 @@ class _TicketPageState extends State<TicketPage> {
                     value:
                         AppUtil(
                           solarDateTime: DateTime.now(),
-                        ).getTruongSinhGio(),
+                        ).getTruongSinhNam(),
                     size: 6,
                     bg: Colors.grey.shade200,
                     titleColor: Colors.black54,
@@ -955,13 +955,13 @@ class _TicketPageState extends State<TicketPage> {
               TableRow(
                 children: [
                   tb(
-                    value: AppUtil(solarDateTime: dateDaVan).getNapAmGio(),
+                    value: AppUtil(solarDateTime: dateDaVan).getNapAmNam(),
                     bg: Colors.grey.shade200,
                     size: 6.5,
                     titleColor: Colors.black,
                   ),
                   tb(
-                    value: AppUtil(solarDateTime: DateTime.now()).getNapAmGio(),
+                    value: AppUtil(solarDateTime: DateTime.now()).getNapAmNam(),
                     bg: Colors.grey.shade200,
                     size: 6.5,
                     titleColor: Colors.black,
@@ -1227,6 +1227,9 @@ class _TicketPageState extends State<TicketPage> {
                               AppUtil(
                                 solarDateTime: DateTime(
                                   yearStart + index * 10,
+                                  1,
+                                  1,
+                                  1,
                                   1,
                                   1,
                                 ),
@@ -1497,7 +1500,7 @@ class _TicketPageState extends State<TicketPage> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '${yearStart + index * 10}',
+                                  text: '${yearStart + index}',
                                   style: baseStyle.copyWith(
                                     color: Colors.black,
                                     fontSize: 8,
@@ -1505,7 +1508,7 @@ class _TicketPageState extends State<TicketPage> {
                                 ),
                                 TextSpan(
                                   text:
-                                      '(${yearStart + index * 10 - (widget.model.year ?? 0)}T)',
+                                      '(${yearStart + index - (widget.model.year ?? 0)}T)',
                                   style: baseStyle.copyWith(
                                     fontSize: 5,
                                     color: Colors.red,
@@ -1528,7 +1531,7 @@ class _TicketPageState extends State<TicketPage> {
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1549,7 +1552,7 @@ class _TicketPageState extends State<TicketPage> {
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1557,7 +1560,7 @@ class _TicketPageState extends State<TicketPage> {
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1578,7 +1581,7 @@ class _TicketPageState extends State<TicketPage> {
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1586,7 +1589,7 @@ class _TicketPageState extends State<TicketPage> {
                           titleColor:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1622,7 +1625,7 @@ class _TicketPageState extends State<TicketPage> {
                             children:
                                 AppUtil(
                                       solarDateTime: DateTime(
-                                        yearStart + index * 10,
+                                        yearStart + index,
                                         1,
                                         1,
                                       ),
@@ -1681,7 +1684,7 @@ class _TicketPageState extends State<TicketPage> {
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
@@ -1703,7 +1706,7 @@ class _TicketPageState extends State<TicketPage> {
                           value:
                               AppUtil(
                                 solarDateTime: DateTime(
-                                  yearStart + index * 10,
+                                  yearStart + index,
                                   1,
                                   1,
                                 ),
